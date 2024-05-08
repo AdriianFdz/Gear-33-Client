@@ -1,8 +1,12 @@
-/*
- * main.cpp
- *
- *  Created on: 7 may 2024
- *      Author: seven
- */
+#include "dibujos.h"
 
+int main() {
 
+	dibujoLogo();
+
+	dibujoPersona();
+
+	dibujoCoche();
+
+	return 0;
+}
