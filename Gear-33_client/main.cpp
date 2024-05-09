@@ -1,12 +1,9 @@
 #include "dibujos.h"
+#include "menus.h"
 
 int main() {
 
-	dibujoLogo();
-
-	dibujoPersona();
-
-	dibujoCoche();
+	menuRegistro();
 
 	return 0;
 }

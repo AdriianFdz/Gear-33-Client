@@ -1,5 +1,6 @@
 #ifndef MENUS_H_
 #define MENUS_H_
+#include "dibujos.h"
 
 void menuInicio();
 	void opcionMenuInicio(int *opcion);
@@ -21,14 +22,14 @@ void menuModificarUsuario();
 	void opcionMenuModificarUsuario(int *opcion /* Usuario *u */);
 
 		/*Todas estas funciones tienen que recibir Usuario *u */
-		void modificarNombre();
-		void modificarApellido();
-		void modificarDNI();
-		void modificarFechaNac();
-		void modificarTelefono();
-		void modificarDireccion();
-		void modificarCiudad();
-		void modificarContrasena();
+		void menuModificarNombre();
+		void menuModificarApellido();
+		void menuModificarDNI();
+		void menuModificarFechaNac();
+		void menuModificarTelefono();
+		void menuModificarDireccion();
+		void menuModificarCiudad();
+		void menuModificarContrasena();
 
 
 
