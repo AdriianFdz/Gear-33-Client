@@ -1,7 +1,7 @@
 #include "menus.h"
 #include <iostream>
-using namespace std;
 
+using namespace std;
 
 void menuInicio() {
 	int opcion;
@@ -56,6 +56,7 @@ void menuInicioSesion() {
 	char contrasena[25];
 	cout<<"Inserte dni: ";cin>>dni;cout<<endl;
 	cout<<"Inserte contrasena: ";cin>>contrasena;cout<<endl;
+
 
 	//funcion para comprobar que el usuario existe
 	menuPrincipal();
