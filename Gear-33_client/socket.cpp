@@ -49,7 +49,7 @@ int setUpSocket(SOCKET* s){
 	return 0;
 }
 
-void enviarComandoIniciarSesion(SOCKET* s, char* dni, char* contrasena){
+int enviarComandoIniciarSesion(SOCKET* s, char* dni, char* contrasena){
 	char sendBuff[512], recvBuff[512];
 
 	strcpy(sendBuff, "COMP_INICIO_SESION");
@@ -60,6 +60,7 @@ void enviarComandoIniciarSesion(SOCKET* s, char* dni, char* contrasena){
 	send(*s, sendBuff, sizeof(sendBuff), 0);
 
 	recv(*s, recvBuff, sizeof(recvBuff), 0);
-	cout << "EXISTE USUARIO?: " << recvBuff << endl;
+
+	return atoi(recvBuff);
 
 }

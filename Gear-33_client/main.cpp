@@ -8,9 +8,9 @@
 int main() {
 	SOCKET s;
 	setUpSocket(&s);
-	enviarComandoIniciarSesion(&s, "testa", "test");
+	//enviarComandoIniciarSesion(&s, "testa", "test");
 
-	menuRegistro();
+	menuInicio(&s);
 
 	return 0;
 }

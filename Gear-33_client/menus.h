@@ -1,13 +1,14 @@
 #ifndef MENUS_H_
 #define MENUS_H_
 #include "dibujos.h"
+#include <winsock2.h>
 
-void menuInicio();
-	void opcionMenuInicio(int *opcion);
+void menuInicio(SOCKET* s);
+	void opcionMenuInicio(int *opcion, SOCKET* s);
 
 void menuRegistro();
 
-void menuInicioSesion();
+void menuInicioSesion(SOCKET* s);
 
 void menuPrincipal();
 	void opcionMenuPrincipal(int *opcion);

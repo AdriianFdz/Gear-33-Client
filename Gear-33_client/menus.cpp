@@ -1,9 +1,13 @@
 #include "menus.h"
+#include "socket.h"
 #include <iostream>
+#include <winsock2.h>
+#include <windows.h>
 
 using namespace std;
 
-void menuInicio() {
+void menuInicio(SOCKET* s) {
+	system("cls");
 	int opcion;
 	dibujoLogo();
 	cout<<"1. Registrarse"<<endl<<
@@ -11,18 +15,18 @@ void menuInicio() {
 		  "3. Panel de administrador"<<endl<<
 		  "0. Salir"<<endl<<endl<<
 		  "Introduce una opcion: "; cin>>opcion;cout<<endl;
-	opcionMenuInicio(&opcion);
+	opcionMenuInicio(&opcion, s);
 
 }
 
-void opcionMenuInicio(int *opcion) {
+void opcionMenuInicio(int *opcion, SOCKET* s) {
 	system("cls");
 	switch (*opcion) {
 			case 1:
 				menuRegistro();
 				break;
 			case 2:
-				menuInicioSesion();
+				menuInicioSesion(s);
 				break;
 			case 3:
 				break;
@@ -31,7 +35,7 @@ void opcionMenuInicio(int *opcion) {
 				break;
 			default:
 				cout<<"El digito introducido no corresponde a ninguno de los anteriores"<<endl;
-				menuInicio();
+				menuInicio(s);
 				break;
 		}
 }
@@ -46,7 +50,7 @@ void menuRegistro() {
 
 }
 
-void menuInicioSesion() {
+void menuInicioSesion(SOCKET* s) {
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
 		  "      Iniciar sesion     "<<endl<<endl<<
@@ -54,15 +58,31 @@ void menuInicioSesion() {
 
 	char dni[10];
 	char contrasena[25];
-	cout<<"Inserte dni: ";cin>>dni;cout<<endl;
-	cout<<"Inserte contrasena: ";cin>>contrasena;cout<<endl;
+	cout<<"Inserte dni: ";
+	cin>>dni;
+	cout<<"Inserte contrasena: ";
+	cin>>contrasena;
 
 
-	//funcion para comprobar que el usuario existe
-	menuPrincipal();
+	int existe = enviarComandoIniciarSesion(s, dni, contrasena);
+
+	if (existe == 1) {
+		cout << endl << "=========================================================="<<endl;
+		cout << "Creedenciales correctas. Accediendo a su pagina personal." << endl;
+		cout << "=========================================================="<<endl;
+		Sleep(3000);
+		menuPrincipal();
+	}
+
+	cout << endl << "=========================================================="<<endl;
+	cout << "Error al iniciar sesion. Accediendo a la pagina principal." << endl;
+	cout << "=========================================================="<<endl;
+
+	menuInicio(s);
 }
 
 void menuPrincipal() {
+	system("cls");
 	int opcion;
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
