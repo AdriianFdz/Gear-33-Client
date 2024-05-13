@@ -59,6 +59,13 @@ int enviarComandoIniciarSesion(SOCKET* s, char* dni, char* contrasena){
 	strcpy(sendBuff, contrasena);
 	send(*s, sendBuff, sizeof(sendBuff), 0);
 
+	/*
+	 * Pasar como parametro (referencia) usuario u
+	 * Varios recive metiendo cada propiedad en usuario u
+	 * ...
+	 * ...
+	 */
+
 	recv(*s, recvBuff, sizeof(recvBuff), 0);
 
 	return atoi(recvBuff);

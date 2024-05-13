@@ -63,7 +63,10 @@ void menuInicioSesion(SOCKET* s) {
 	cout<<"Inserte contrasena: ";
 	cin>>contrasena;
 
-
+	/*
+	 * Crear Usuario u
+	 * Pasarlo como referencia a enviarComandoIniciarSesion (Usuario &u)
+	 */
 	int existe = enviarComandoIniciarSesion(s, dni, contrasena);
 
 	if (existe == 1) {
@@ -71,6 +74,9 @@ void menuInicioSesion(SOCKET* s) {
 		cout << "Creedenciales correctas. Accediendo a su pagina personal." << endl;
 		cout << "=========================================================="<<endl;
 		Sleep(3000);
+		/*
+		 * Pasar a menu principal Usuario u como referencia
+		 */
 		menuPrincipal();
 	}
 
@@ -138,8 +144,8 @@ void menuModificarUsuario() {
 		  "    Modificar usuario    "<<endl<<endl<<
 		  "-------------------------"<<endl<<endl;
 
-	char contrasena[25];
-	cout<<"Inserte contrasena: ";cin>>contrasena;cout<<endl;
+	//char contrasena[25];
+	//cout<<"Inserte contrasena: ";cin>>contrasena;cout<<endl;
 
 	//hacer funcion que pida y compruebe contraseña antes de modificar los dato????
 
