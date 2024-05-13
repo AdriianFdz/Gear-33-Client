@@ -129,12 +129,26 @@ void opcionMenuPrincipal(int *opcion) {
 }
 
 void menuCompraCoches() {
+	//funcion para recuperar todas los coches a comprar
+	dibujoCoche();
+	cout<<"---------------------------------------"<<endl<<endl<<
+		  "    Vehiculos de compra disponibles    "<<endl<<endl<<
+		  "---------------------------------------"<<endl<<endl;
+
 }
 
 void menuAlquilaCoches() {
+	//funcion para recuperar todos los coches a alquilar
+	dibujoCoche();
+	cout<<"-----------------------------------------"<<endl<<endl<<
+		  "    Vehiculos de alquiler disponibles    "<<endl<<endl<<
+		  "-----------------------------------------"<<endl<<endl;
 }
 
 void menuHistorial() {
+	cout<<"----------------------------------"<<endl<<endl<<
+		  "    Historial de adquisiciones    "<<endl<<endl<<
+		  "----------------------------------"<<endl<<endl;
 }
 
 void menuModificarUsuario() {
@@ -200,25 +214,58 @@ void opcionMenuModificarUsuario(int *opcion) {
 }
 
 void menuModificarNombre() {
+	dibujoPersona();
+	cout<<"-------------------------"<<endl<<endl<<
+		  "    Modificar nombre    "<<endl<<endl<<
+		  "-------------------------"<<endl<<endl;
 }
 
 void menuModificarApellido() {
+	dibujoPersona();
+	cout<<"-------------------------"<<endl<<endl<<
+		  "    Modificar apellido    "<<endl<<endl<<
+		  "-------------------------"<<endl<<endl;
 }
 
 void menuModificarDNI() {
+	dibujoPersona();
+	cout<<"-------------------------"<<endl<<endl<<
+		  "      Modificar DNI      "<<endl<<endl<<
+		  "-------------------------"<<endl<<endl;
 }
 
 void menuModificarFechaNac() {
+	dibujoPersona();
+	cout<<"-------------------------------------"<<endl<<endl<<
+		  "    Modificar fecha de nacimiento    "<<endl<<endl<<
+		  "-------------------------------------"<<endl<<endl;
 }
 
 void menuModificarTelefono() {
+	dibujoPersona();
+	cout<<"-------------------------"<<endl<<endl<<
+		  "    Modificar telefono   "<<endl<<endl<<
+		  "-------------------------"<<endl<<endl;
 }
 
 void menuModificarDireccion() {
+	dibujoPersona();
+	cout<<"-------------------------"<<endl<<endl<<
+		  "    Modificar usuario    "<<endl<<endl<<
+		  "-------------------------"<<endl<<endl;
 }
 
 void menuModificarCiudad() {
+	dibujoPersona();
+	cout<<"--------------------------------------"<<endl<<endl<<
+		  "    Modificar ciudad de residencia    "<<endl<<endl<<
+		  "--------------------------------------"<<endl<<endl;
 }
 
 void menuModificarContrasena() {
+	dibujoPersona();
+	cout<<"----------------------------"<<endl<<endl<<
+		  "    Modificar contrasena    "<<endl<<endl<<
+		  "----------------------------"<<endl<<endl;
+
 }
