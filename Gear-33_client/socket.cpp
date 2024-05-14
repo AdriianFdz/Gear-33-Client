@@ -49,7 +49,7 @@ int setUpSocket(SOCKET* s){
 	return 0;
 }
 
-int enviarComandoIniciarSesion(SOCKET* s, char* dni, char* contrasena){
+int enviarComandoIniciarSesion(SOCKET* s, char* dni, char* contrasena, Usuario& u){
 	char sendBuff[512], recvBuff[512];
 
 	strcpy(sendBuff, "COMP_INICIO_SESION");
@@ -59,14 +59,27 @@ int enviarComandoIniciarSesion(SOCKET* s, char* dni, char* contrasena){
 	strcpy(sendBuff, contrasena);
 	send(*s, sendBuff, sizeof(sendBuff), 0);
 
-	/*
-	 * Pasar como parametro (referencia) usuario u
-	 * Varios recive metiendo cada propiedad en usuario u
-	 * ...
-	 * ...
-	 */
 
 	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	u.setDni(recvBuff);
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	u.setNombre(recvBuff);
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	u.setApellido(recvBuff);
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	u.setFechaNac(recvBuff);
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	u.setTelefono(recvBuff);
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	u.setDireccion(recvBuff);
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	u.setContrasena(recvBuff);
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	u.setIdCiudad(atoi(recvBuff));
+
+
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+
 
 	return atoi(recvBuff);
 

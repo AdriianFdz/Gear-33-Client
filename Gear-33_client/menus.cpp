@@ -67,7 +67,11 @@ void menuInicioSesion(SOCKET* s) {
 	 * Crear Usuario u
 	 * Pasarlo como referencia a enviarComandoIniciarSesion (Usuario &u)
 	 */
-	int existe = enviarComandoIniciarSesion(s, dni, contrasena);
+
+	Usuario u;
+	int existe = enviarComandoIniciarSesion(s, dni, contrasena, u);
+
+
 
 	if (existe == 1) {
 		cout << endl << "=========================================================="<<endl;
@@ -84,7 +88,10 @@ void menuInicioSesion(SOCKET* s) {
 	cout << "Error al iniciar sesion. Accediendo a la pagina principal." << endl;
 	cout << "=========================================================="<<endl;
 
+
 	menuInicio(s);
+
+
 }
 
 void menuPrincipal() {
