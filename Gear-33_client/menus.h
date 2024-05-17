@@ -2,35 +2,36 @@
 #define MENUS_H_
 #include "dibujos.h"
 #include <winsock2.h>
+#include "Usuario.h"
 
 void menuInicio(SOCKET* s);
 	void opcionMenuInicio(int *opcion, SOCKET* s);
 
-void menuRegistro();
+void menuRegistro(SOCKET* s);
 
 void menuInicioSesion(SOCKET* s);
 
-void menuPrincipal();
-	void opcionMenuPrincipal(int *opcion);
+void menuPrincipal(SOCKET* s, Usuario u);
+	void opcionMenuPrincipal(SOCKET* s, int *opcion, Usuario u);
 
-void menuCompraCoches();
+void menuCompraCoches(Usuario u);
 
-void menuAlquilaCoches();
+void menuAlquilaCoches(Usuario u);
 
 void menuHistorial(/* Coche *c */);
 
-void menuModificarUsuario();
-	void opcionMenuModificarUsuario(int *opcion /* Usuario *u */);
+void menuModificarUsuario(SOCKET* s, Usuario u);
+	void opcionMenuModificarUsuario(SOCKET* s, int *opcion, Usuario u);
 
 		/*Todas estas funciones tienen que recibir Usuario *u */
-		void menuModificarNombre();
-		void menuModificarApellido();
-		void menuModificarDNI();
-		void menuModificarFechaNac();
-		void menuModificarTelefono();
-		void menuModificarDireccion();
-		void menuModificarCiudad();
-		void menuModificarContrasena();
+		void menuModificarNombre(SOCKET* s, Usuario *u);
+		void menuModificarApellido(SOCKET* s, Usuario *u);
+		void menuModificarDNI(SOCKET* s, Usuario *u);
+		void menuModificarFechaNac(SOCKET* s, Usuario *u);
+		void menuModificarTelefono(SOCKET* s, Usuario *u);
+		void menuModificarDireccion(SOCKET* s, Usuario *u);
+		void menuModificarCiudad(SOCKET* s, Usuario *u);
+		void menuModificarContrasena(SOCKET* s, Usuario *u);
 
 
 

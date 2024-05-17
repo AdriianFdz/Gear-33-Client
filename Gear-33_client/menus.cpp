@@ -23,7 +23,7 @@ void opcionMenuInicio(int *opcion, SOCKET* s) {
 	system("cls");
 	switch (*opcion) {
 			case 1:
-				menuRegistro();
+				menuRegistro(s);
 				break;
 			case 2:
 				menuInicioSesion(s);
@@ -40,13 +40,17 @@ void opcionMenuInicio(int *opcion, SOCKET* s) {
 		}
 }
 
-void menuRegistro() {
+void menuRegistro(SOCKET* s) {
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
 		  "   Registro de usuario   "<<endl<<endl<<
 		  "-------------------------"<<endl<<endl;
 
 	//Funcion pedirPersona
+	Usuario u;
+	u.pedirPersona();
+	enviarComandoRegistro(s, u);
+	menuPrincipal(s, u);
 
 }
 
@@ -81,7 +85,7 @@ void menuInicioSesion(SOCKET* s) {
 		/*
 		 * Pasar a menu principal Usuario u como referencia
 		 */
-		menuPrincipal();
+		menuPrincipal(s, u);
 	}
 
 	cout << endl << "=========================================================="<<endl;
@@ -94,7 +98,7 @@ void menuInicioSesion(SOCKET* s) {
 
 }
 
-void menuPrincipal() {
+void menuPrincipal(SOCKET* s, Usuario u) {
 	system("cls");
 	int opcion;
 	dibujoPersona();
@@ -107,20 +111,20 @@ void menuPrincipal() {
 		  "4. Ver historial de adquisiciones"<<endl<<
 		  "0. Salir"<<endl<<endl<<
 		  "Introduce una opcion: ";cin>>opcion;cout<<endl;
-	opcionMenuPrincipal(&opcion);
+	opcionMenuPrincipal(s,&opcion, u);
 }
 
-void opcionMenuPrincipal(int *opcion) {
+void opcionMenuPrincipal(SOCKET* s, int *opcion, Usuario u) {
 	system("cls");
 	switch (*opcion) {
 			case 1:
-				menuCompraCoches();
+				menuCompraCoches(u);
 				break;
 			case 2:
-				menuAlquilaCoches();
+				menuAlquilaCoches(u);
 				break;
 			case 3:
-				menuModificarUsuario();
+				menuModificarUsuario( s, u);
 				break;
 			case 4:
 				menuHistorial();
@@ -130,12 +134,12 @@ void opcionMenuPrincipal(int *opcion) {
 				break;
 			default:
 				cout<<"El digito introducido no corresponde a ninguno de los anteriores"<<endl;
-				menuPrincipal();
+				menuPrincipal(s, u);
 				break;
 		}
 }
 
-void menuCompraCoches() {
+void menuCompraCoches(Usuario u) {
 	//funcion para recuperar todas los coches a comprar
 	dibujoCoche();
 	cout<<"---------------------------------------"<<endl<<endl<<
@@ -144,7 +148,7 @@ void menuCompraCoches() {
 
 }
 
-void menuAlquilaCoches() {
+void menuAlquilaCoches(Usuario u) {
 	//funcion para recuperar todos los coches a alquilar
 	dibujoCoche();
 	cout<<"-----------------------------------------"<<endl<<endl<<
@@ -158,7 +162,7 @@ void menuHistorial() {
 		  "----------------------------------"<<endl<<endl;
 }
 
-void menuModificarUsuario() {
+void menuModificarUsuario(SOCKET* s, Usuario u) {
 	int opcion;
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
@@ -180,99 +184,164 @@ void menuModificarUsuario() {
 		  "8. Modificar contrasena"<<endl<<
 		  "0. Volver"<<endl<<endl<<
 		  "Introduce una opcion: ";cin>>opcion;cout<<endl;
-	opcionMenuModificarUsuario(&opcion);
+	opcionMenuModificarUsuario(s, &opcion, u);
 }
 
-void opcionMenuModificarUsuario(int *opcion) {
+void opcionMenuModificarUsuario(SOCKET* s, int *opcion, Usuario u) {
 	system("cls");
 	switch (*opcion) {
 			case 1:
-				menuModificarNombre();
+				menuModificarNombre(s,&u);
 				break;
 			case 2:
-				menuModificarApellido();
+				menuModificarApellido(s,&u);
 				break;
 			case 3:
-				menuModificarDNI();
+				menuModificarDNI(s,&u);
 				break;
 			case 4:
-				menuModificarFechaNac();
+				menuModificarFechaNac(s,&u);
 				break;
 			case 5:
-				menuModificarTelefono();
+				menuModificarTelefono(s,&u);
 				break;
 			case 6:
-				menuModificarDireccion();
+				menuModificarDireccion(s,&u);
 				break;
 			case 7:
-				menuModificarCiudad();
+				menuModificarCiudad(s,&u);
 				break;
 			case 8:
-				menuModificarContrasena();
+				menuModificarContrasena(s,&u);
 				break;
 			case 0:
-				menuPrincipal();
+				menuPrincipal(s,u);
 				break;
 			default:
 				cout<<"El digito introducido no corresponde a ninguno de los anteriores"<<endl;
-				menuModificarUsuario();
+				menuModificarUsuario(s,u);
 				break;
 		}
 }
 
-void menuModificarNombre() {
+void menuModificarNombre(SOCKET* s, Usuario *u) {
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
 		  "    Modificar nombre    "<<endl<<endl<<
 		  "-------------------------"<<endl<<endl;
+	char nombre[51];
+	cout<<"Nombre actual: "<<u->getNombre()<<endl;
+	cout<<"Introduce el nuevo nombre: ";cin>>nombre;
+
+	enviarComandoModificarNombre(s, u->getDni(), nombre);
+
+	u->setNombre(nombre);
+
+	menuModificarUsuario(s,*u);
+
 }
 
-void menuModificarApellido() {
+void menuModificarApellido(SOCKET* s, Usuario *u) {
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
 		  "    Modificar apellido    "<<endl<<endl<<
 		  "-------------------------"<<endl<<endl;
+	char apellido[51];
+	cout<<"Apellido actual: "<<u->getApellido()<<endl;
+	cout<<"Introduce el nuevo apellido: ";cin>>apellido;
+
+	enviarComandoModificarApellido(s, u->getDni(), apellido);
+
+	u->setApellido(apellido);
+
+	menuModificarUsuario(s, *u);
 }
 
-void menuModificarDNI() {
+void menuModificarDNI(SOCKET* s, Usuario *u) {
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
 		  "      Modificar DNI      "<<endl<<endl<<
 		  "-------------------------"<<endl<<endl;
+	char dni[10];
+	cout<<"DNI actual: "<<u->getDni()<<endl;
+	cout<<"Introduce el nuevo DNI: ";cin>>dni;
+
+	enviarComandoModificarDni(s, u->getDni(), dni);
+
+	u->setDni(dni);
+
+	menuModificarUsuario(s, *u);
 }
 
-void menuModificarFechaNac() {
+void menuModificarFechaNac(SOCKET* s, Usuario *u) {
 	dibujoPersona();
 	cout<<"-------------------------------------"<<endl<<endl<<
 		  "    Modificar fecha de nacimiento    "<<endl<<endl<<
 		  "-------------------------------------"<<endl<<endl;
+	char fechaNac[11];
+	cout<<"Fecha actual: "<<u->getFechaNac()<<endl;
+	cout<<"Introduce la nueva fecha: ";cin>>fechaNac;
+
+	enviarComandoModificarFechaNac(s, u->getDni(), fechaNac);
+
+	u->setFechaNac(fechaNac);
+
+	menuModificarUsuario(s, *u);
 }
 
-void menuModificarTelefono() {
+void menuModificarTelefono(SOCKET* s, Usuario *u) {
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
 		  "    Modificar telefono   "<<endl<<endl<<
 		  "-------------------------"<<endl<<endl;
+	char telefono[10];
+	cout<<"Telefono actual: "<<u->getTelefono()<<endl;
+	cout<<"Introduce el nuevo telefono: ";cin>>telefono;
+
+	enviarComandoModificarTelefono(s, u->getDni(), telefono);
+
+	u->setTelefono(telefono);
+
+	menuModificarUsuario(s, *u);
 }
 
-void menuModificarDireccion() {
+void menuModificarDireccion(SOCKET* s, Usuario *u) {
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
 		  "    Modificar usuario    "<<endl<<endl<<
 		  "-------------------------"<<endl<<endl;
+	char direccion[51];
+	cout<<"Direccion actual: "<<u->getDireccion()<<endl;
+	cout<<"Introduce la nueva direccion: ";cin>>direccion;
+
+	enviarComandoModificarDireccion(s, u->getDni(), direccion);
+
+	u->setDireccion(direccion);
+
+	menuModificarUsuario(s, *u);
 }
 
-void menuModificarCiudad() {
+void menuModificarCiudad(SOCKET* s, Usuario *u) {
 	dibujoPersona();
 	cout<<"--------------------------------------"<<endl<<endl<<
 		  "    Modificar ciudad de residencia    "<<endl<<endl<<
 		  "--------------------------------------"<<endl<<endl;
+
 }
 
-void menuModificarContrasena() {
+void menuModificarContrasena(SOCKET* s, Usuario *u) {
 	dibujoPersona();
 	cout<<"----------------------------"<<endl<<endl<<
 		  "    Modificar contrasena    "<<endl<<endl<<
 		  "----------------------------"<<endl<<endl;
+	char contrasena[51];
+	cout<<"Contrasena actual: "<<u->getContrasena()<<endl;
+	cout<<"Introduce el nuevo apellido: ";cin>>contrasena;
+
+	enviarComandoModificarContrasena(s, u->getDni(), contrasena);
+
+	u->setContrasena(contrasena);
+
+	menuModificarUsuario(s, *u);
 
 }

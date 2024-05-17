@@ -84,3 +84,101 @@ int enviarComandoIniciarSesion(SOCKET* s, char* dni, char* contrasena, Usuario& 
 	return atoi(recvBuff);
 
 }
+
+void enviarComandoRegistro(SOCKET* s, Usuario& u) {
+	char sendBuff[512], recvBuff[512];
+
+	strcpy(sendBuff, "COMP_REGISTRO");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, u.getDni());
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, u.getNombre());
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, u.getApellido());
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, u.getFechaNac());
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, u.getDireccion());
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, u.getTelefono());
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, u.getContrasena());
+}
+
+void enviarComandoModificarNombre(SOCKET *s, char *dni, char *nombreNuevo) {
+	char sendBuff[512];
+
+	strcpy(sendBuff, "COMP_MODIF_NOMBRE");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, dni);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, nombreNuevo);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+}
+
+void enviarComandoModificarDni(SOCKET *s, char *dni, char *dniNuevo) {
+	char sendBuff[512];
+
+	strcpy(sendBuff, "COMP_MODIF_DNI");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, dni);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, dniNuevo);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+}
+
+void enviarComandoModificarApellido(SOCKET *s, char *dni, char *apellidoNuevo) {
+	char sendBuff[512];
+
+	strcpy(sendBuff, "COMP_MODIF_APELLIDO");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, dni);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, apellidoNuevo);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+}
+
+void enviarComandoModificarFechaNac(SOCKET *s, char *dni, char *fechaNueva) {
+	char sendBuff[512];
+
+	strcpy(sendBuff, "COMP_MODIF_FECHA");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, dni);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, fechaNueva);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+}
+
+void enviarComandoModificarDireccion(SOCKET *s, char *dni,char *direccionNueva) {
+	char sendBuff[512];
+
+	strcpy(sendBuff, "COMP_MODIF_DIRECCION");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, dni);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, direccionNueva);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+}
+
+void enviarComandoModificarTelefono(SOCKET *s, char *dni, char *telefonoNuevo) {
+	char sendBuff[512];
+
+	strcpy(sendBuff, "COMP_MODIF_TELEFONO");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, dni);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, telefonoNuevo);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+}
+
+void enviarComandoModificarContrasena(SOCKET *s, char *dni, char *contrasenaNueva) {
+	char sendBuff[512];
+
+	strcpy(sendBuff, "COMP_MODIF_CONTRASENA");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, dni);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, contrasenaNueva);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+}
