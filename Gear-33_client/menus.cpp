@@ -312,7 +312,9 @@ void menuModificarDireccion(SOCKET* s, Usuario *u) {
 		  "-------------------------"<<endl<<endl;
 	char direccion[51];
 	cout<<"Direccion actual: "<<u->getDireccion()<<endl;
-	cout<<"Introduce la nueva direccion: ";cin>>direccion;
+	cout<<"Introduce la nueva direccion: ";
+	cin.sync();
+	cin.getline(direccion, 50);
 
 	enviarComandoModificarDireccion(s, u->getDni(), direccion);
 

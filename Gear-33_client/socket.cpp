@@ -103,6 +103,7 @@ void enviarComandoRegistro(SOCKET* s, Usuario& u) {
 	strcpy(sendBuff, u.getTelefono());
 	send(*s, sendBuff, sizeof(sendBuff), 0);
 	strcpy(sendBuff, u.getContrasena());
+	send(*s, sendBuff, sizeof(sendBuff), 0);
 }
 
 void enviarComandoModificarNombre(SOCKET *s, char *dni, char *nombreNuevo) {

@@ -112,6 +112,7 @@ void Usuario::setIdCiudad(int id) {
 }
 
 void Usuario::pedirPersona() {
+	string linea;
 	char dni[10];
 	char nombre[51];
 	char apellido[51];
@@ -131,7 +132,10 @@ void Usuario::pedirPersona() {
 	setFechaNac(fechaNacimiento);
 	cout<<"Introduce el telefono: ";cin>>telefono;cout<<endl;
 	setTelefono(telefono);
-	cout<<"Introduce el direccion: ";cin>>direccion;cout<<endl;
+	cout<<"Introduce el direccion: ";
+	cin.sync();
+	cin.getline(direccion, 50);
+	cout<<endl;
 	setDireccion(direccion);
 	cout<<"Introduce el contrasena: ";cin>>contrasena;cout<<endl;
 	setContrasena(contrasena);
