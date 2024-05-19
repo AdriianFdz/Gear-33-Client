@@ -66,7 +66,8 @@ void Coche::mostrarCoche() {
          << left << setw(15) << this->anyo
          << left << setw(15) << this->precio
          << left << setw(15) << this->matricula
-         << endl;}
+         << endl;
+}
 
 char* Coche::getMatricula() {
 	return this->matricula;
