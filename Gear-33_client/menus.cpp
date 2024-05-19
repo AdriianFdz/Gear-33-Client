@@ -1,6 +1,7 @@
 #include "menus.h"
 #include "socket.h"
 #include <iostream>
+#include <iomanip>
 #include <winsock2.h>
 #include <windows.h>
 
@@ -118,7 +119,7 @@ void opcionMenuPrincipal(SOCKET* s, int *opcion, Usuario u) {
 	system("cls");
 	switch (*opcion) {
 			case 1:
-				menuCompraCoches(u);
+				menuCompraCoches(s, u);
 				break;
 			case 2:
 				menuAlquilaCoches(u);
@@ -139,13 +140,58 @@ void opcionMenuPrincipal(SOCKET* s, int *opcion, Usuario u) {
 		}
 }
 
-void menuCompraCoches(Usuario u) {
-	//funcion para recuperar todas los coches a comprar
+void menuCompraCoches(SOCKET* s, Usuario u) {
+	int opcion, precioMin = -1, precioMax = -1;
 	dibujoCoche();
 	cout<<"---------------------------------------"<<endl<<endl<<
 		  "    Vehiculos de compra disponibles    "<<endl<<endl<<
 		  "---------------------------------------"<<endl<<endl;
+	cout << "Desea introducir un rango de precios?" <<endl;
+	cout << "1. Si" << endl;
+	cout << "2. No" << endl;
 
+	int numeroCoches;
+	Coche* listaCoches;
+	do {
+		cout << "Opcion: "; cin >> opcion;
+		if (opcion == 1){
+			cout << "Introduce el precio minimo deseado: ";
+			cin >> precioMin;
+			cout << "Introduce el precio maximo deseado: ";
+			cin >> precioMax;
+
+			//LLAMAR AL SOCKET
+			enviarComandoObtenerNumeroCochesPorPrecio(s, precioMin, precioMax, numeroCoches);
+			listaCoches = new Coche[numeroCoches];
+			enviarComandoObtenerCochesPorPrecio(s, precioMin, precioMax, listaCoches, numeroCoches);
+			//La listaCoches ya tiene todos los coches guardados en ese rango de precio
+		} else if (opcion == 2){
+			enviarComandoObtenerNumeroCochesTotal(s, numeroCoches);
+			listaCoches = new Coche[numeroCoches];
+			enviarComandoObtenerCochesTotal(s, listaCoches, numeroCoches);
+		} else {
+			cout << "Opcion no valida" << endl;
+		}
+
+	} while (opcion != 1 && opcion != 2);
+
+
+    cout << left << setw(15) << "MARCA"
+         << left << setw(15) << "MODELO"
+         << left << setw(15) << "COLOR"
+         << left << setw(15) << "POTENCIA"
+         << left << setw(15) << "COMBUSTIBLE"
+         << left << setw(15) << "CAMBIO"
+         << left << setw(15) << "ANYO"
+         << left << setw(15) << "PRECIO"
+         << left << setw(15) << "MATRICULA"
+         << endl;
+    for (int i = 0; i < numeroCoches; i++) {
+		listaCoches[i].mostrarCoche();
+	}
+
+	Sleep(10000);
+	delete[] listaCoches;
 }
 
 void menuAlquilaCoches(Usuario u) {

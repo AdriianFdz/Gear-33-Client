@@ -6,6 +6,7 @@
  */
 
 #include "socket.h"
+#include "Coche.h"
 
 #include <winsock2.h>
 #include <iostream>
@@ -182,4 +183,114 @@ void enviarComandoModificarContrasena(SOCKET *s, char *dni, char *contrasenaNuev
 	send(*s, sendBuff, sizeof(sendBuff), 0);
 	strcpy(sendBuff, contrasenaNueva);
 	send(*s, sendBuff, sizeof(sendBuff), 0);
+}
+
+void enviarComandoObtenerNumeroCochesPorPrecio(SOCKET* s, int precioMin, int precioMax, int& numeroCoches){
+	char sendBuff[512], recvBuff[512], precioMinimoArray[2], precioMaximoArray[2];
+	strcpy(sendBuff, "OBTENER_NUMERO_COCHES_POR_PRECIO");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	itoa(precioMin, precioMinimoArray, 10);
+	strcpy(sendBuff, precioMinimoArray);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	itoa(precioMax, precioMaximoArray, 10);
+	strcpy(sendBuff, precioMaximoArray);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	numeroCoches = atoi(recvBuff);
+}
+
+void enviarComandoObtenerCochesPorPrecio(SOCKET* s, int precioMin, int precioMax, Coche* listaCoches, int& numeroCoches){
+	char sendBuff[512], recvBuff[512], precioMinimoArray[2], precioMaximoArray[2];
+	strcpy(sendBuff, "OBTENER_COCHES_POR_PRECIO");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	itoa(precioMin, precioMinimoArray, 10);
+	strcpy(sendBuff, precioMinimoArray);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	itoa(precioMax, precioMaximoArray, 10);
+	strcpy(sendBuff, precioMaximoArray);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	numeroCoches = atoi(recvBuff);
+
+	for (int i = 0; i < numeroCoches; i++) {
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setMatricula(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setColor(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setPotencia(atoi(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setPrecio(atof(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setAnyo(atoi(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setModelo(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setCambio(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setCombustible(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setMarca(recvBuff);
+	}
+}
+
+void enviarComandoObtenerNumeroCochesTotal(SOCKET* s, int& numeroCoches){
+	char sendBuff[512], recvBuff[512];
+	strcpy(sendBuff, "OBTENER_NUMERO_COCHES_TOTAL");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	numeroCoches = atoi(recvBuff);
+}
+
+void enviarComandoObtenerCochesTotal(SOCKET* s, Coche* listaCoches, int& numeroCoches){
+	char sendBuff[512], recvBuff[512];
+	strcpy(sendBuff, "OBTENER_COCHES_TOTAL");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	numeroCoches = atoi(recvBuff);
+
+	for (int i = 0; i < numeroCoches; i++) {
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setMatricula(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setColor(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setPotencia(atoi(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setPrecio(atof(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setAnyo(atoi(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setModelo(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setCambio(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setCombustible(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setMarca(recvBuff);
+	}
 }

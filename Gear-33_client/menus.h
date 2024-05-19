@@ -14,7 +14,7 @@ void menuInicioSesion(SOCKET* s);
 void menuPrincipal(SOCKET* s, Usuario u);
 	void opcionMenuPrincipal(SOCKET* s, int *opcion, Usuario u);
 
-void menuCompraCoches(Usuario u);
+void menuCompraCoches(SOCKET* s, Usuario u);
 
 void menuAlquilaCoches(Usuario u);
 
@@ -32,7 +32,5 @@ void menuModificarUsuario(SOCKET* s, Usuario u);
 		void menuModificarDireccion(SOCKET* s, Usuario *u);
 		void menuModificarCiudad(SOCKET* s, Usuario *u);
 		void menuModificarContrasena(SOCKET* s, Usuario *u);
-
-
 
 #endif /* MENUS_H_ */

@@ -57,8 +57,16 @@ Coche::~Coche() {
 }
 
 void Coche::mostrarCoche() {
-	cout<<this->marca<<setw(15)<<this->modelo<<setw(15)<<this->color<<setw(15)<<this->potencia<<setw(15)<<this->combustible<<setw(15)<<this->cambio<<setw(15)<<this->anyo<<setw(15)<<this->precio<<setw(15)<<this->matricula<<endl;
-}
+    cout << left << setw(15) << this->marca
+         << left << setw(15) << this->modelo
+         << left << setw(15) << this->color
+         << left << setw(15) << this->potencia
+         << left << setw(15) << this->combustible
+         << left << setw(15) << this->cambio
+         << left << setw(15) << this->anyo
+         << left << setw(15) << this->precio
+         << left << setw(15) << this->matricula
+         << endl;}
 
 char* Coche::getMatricula() {
 	return this->matricula;
