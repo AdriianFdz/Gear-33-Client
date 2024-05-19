@@ -10,6 +10,7 @@
 
 #include <winsock2.h>
 #include <iostream>
+#include <stdlib.h>
 
 
 using namespace std;
@@ -293,4 +294,38 @@ void enviarComandoObtenerCochesTotal(SOCKET* s, Coche* listaCoches, int& numeroC
 		recv(*s, recvBuff, sizeof(recvBuff), 0);
 		listaCoches[i].setMarca(recvBuff);
 	}
+}
+
+void enviarComandoAdquirirCoche(SOCKET* s, char* fecha_ini, char* fecha_fin, Coche c, char* dni, char* tipoAdquisicion, int n_dias){
+	char sendBuff[512], recvBuff[512];
+	strcpy(sendBuff, "ADQUIRIR_COCHE");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	strcpy(sendBuff, fecha_ini);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	strcpy(sendBuff, fecha_fin);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	if (strcmp(tipoAdquisicion, "compra") == 0) {
+		strcpy(sendBuff, "compra");
+		send(*s, sendBuff, sizeof(sendBuff), 0);
+
+		sprintf(sendBuff, "%f", c.getPrecio());
+	} else { //si no es compra, es alquiler
+		strcpy(sendBuff, "alquiler");
+		send(*s, sendBuff, sizeof(sendBuff), 0);
+
+		sprintf(sendBuff, "%f", c.getPrecio() * 0.05 * n_dias);
+	}
+		send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	strcpy(sendBuff, dni);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	strcpy(sendBuff, c.getMatricula());
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	sprintf(sendBuff, "%i", n_dias);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
 }

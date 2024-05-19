@@ -2,6 +2,7 @@
 #include "socket.h"
 #include <iostream>
 #include <iomanip>
+#include <ctime>
 #include <winsock2.h>
 #include <windows.h>
 
@@ -176,7 +177,8 @@ void menuCompraCoches(SOCKET* s, Usuario u) {
 	} while (opcion != 1 && opcion != 2);
 
 
-    cout << left << setw(15) << "MARCA"
+    cout << left << setw(15) << "NUMERO"
+    	 << left << setw(15) << "MARCA"
          << left << setw(15) << "MODELO"
          << left << setw(15) << "COLOR"
          << left << setw(15) << "POTENCIA"
@@ -187,10 +189,39 @@ void menuCompraCoches(SOCKET* s, Usuario u) {
          << left << setw(15) << "MATRICULA"
          << endl;
     for (int i = 0; i < numeroCoches; i++) {
+    	cout << left << setw(15) << i+1;
 		listaCoches[i].mostrarCoche();
 	}
 
-	Sleep(10000);
+	do {
+		cout << "Introduce el numero de coche que desea comprar (introduzca 0 para salir): ";
+		cin >> opcion;
+		if (opcion == 0) {
+			menuPrincipal(s, u);
+		} else if (opcion < 0 || opcion > numeroCoches) {
+			cout << "El numero introducido no es correcto." << endl;
+		} else {
+			/*
+			 * ANADIR A BD ADQUISICION Y CAMBIAR estaComprado a true
+			 */
+		    time_t t = time(nullptr);
+		    tm* now = localtime(&t);
+		    char fecha_ini[11];
+		    strftime(fecha_ini, sizeof(fecha_ini), "%d-%m-%Y", now);
+		    char fecha_fin[11] = "NULL";
+			enviarComandoAdquirirCoche(s, fecha_ini, fecha_fin, listaCoches[opcion-1], u.getDni(), "compra", 0);
+			cout << "=========================================================="<<endl;
+			cout << "Coche con matricula " << listaCoches[opcion-1].getMatricula() << " adquirido correctamente" << endl;
+			cout << "=========================================================="<<endl;
+			Sleep(3000);
+		}
+
+	} while (opcion < 0 || opcion > numeroCoches);
+
+
+	/*
+	 * LIBERAR MEMORIA
+	 */
 	delete[] listaCoches;
 }
 
