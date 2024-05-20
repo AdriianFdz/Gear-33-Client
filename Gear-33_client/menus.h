@@ -16,9 +16,9 @@ void menuPrincipal(SOCKET* s, Usuario u);
 
 void menuCompraCoches(SOCKET* s, Usuario u);
 
-void menuAlquilaCoches(Usuario u);
+void menuAlquilaCoches(SOCKET* s, Usuario u);
 
-void menuHistorial(/* Coche *c */);
+void menuHistorial(SOCKET* s, Usuario u);
 
 void menuModificarUsuario(SOCKET* s, Usuario u);
 	void opcionMenuModificarUsuario(SOCKET* s, int *opcion, Usuario u);

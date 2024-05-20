@@ -11,6 +11,7 @@
 #include <winsock2.h>
 #include "Usuario.h"
 #include "Coche.h"
+#include "Adquisicion.h"
 
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
@@ -31,4 +32,8 @@ void enviarComandoObtenerCochesPorPrecio(SOCKET* s, int precioMin, int precioMax
 void enviarComandoObtenerNumeroCochesTotal(SOCKET* s, int& numeroCoches);
 void enviarComandoObtenerCochesTotal(SOCKET* s, Coche* listaCoches, int& numeroCoches);
 void enviarComandoAdquirirCoche(SOCKET* s, char* fecha_ini, char* fecha_fin, Coche c, char* dni, char* tipoAdquisicion, int n_dias);
+
+void enviarComandoObtenerNumeroAdquisicionesPorDni(SOCKET* s, char* dni, int& numeroAdquisiciones);
+void enviarComandoObtenerAdquisicionesPorDni(SOCKET* s, char* dni, Adquisicion* listaAdquisicion, int& numeroAdquisiciones);
+
 #endif /* SOCKET_H_ */

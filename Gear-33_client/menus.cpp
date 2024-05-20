@@ -123,13 +123,13 @@ void opcionMenuPrincipal(SOCKET* s, int *opcion, Usuario u) {
 				menuCompraCoches(s, u);
 				break;
 			case 2:
-				menuAlquilaCoches(u);
+				menuAlquilaCoches(s, u);
 				break;
 			case 3:
-				menuModificarUsuario( s, u);
+				menuModificarUsuario(s, u);
 				break;
 			case 4:
-				menuHistorial();
+				menuHistorial(s, u);
 				break;
 			case 0:
 				cout<<"SALIENDO...";
@@ -225,7 +225,7 @@ void menuCompraCoches(SOCKET* s, Usuario u) {
 	delete[] listaCoches;
 }
 
-void menuAlquilaCoches(Usuario u) {
+void menuAlquilaCoches(SOCKET* s, Usuario u) {
 	//funcion para recuperar todos los coches a alquilar
 	dibujoCoche();
 	cout<<"-----------------------------------------"<<endl<<endl<<
@@ -233,10 +233,50 @@ void menuAlquilaCoches(Usuario u) {
 		  "-----------------------------------------"<<endl<<endl;
 }
 
-void menuHistorial() {
+void menuHistorial(SOCKET* s, Usuario u) {
+	dibujoCoche();
 	cout<<"----------------------------------"<<endl<<endl<<
 		  "    Historial de adquisiciones    "<<endl<<endl<<
 		  "----------------------------------"<<endl<<endl;
+    cout << left << setw(15) << "TIPO"
+    	 << left << setw(15) << "F_INICIO"
+		 << left << setw(15) << "F_FIN"
+		 << left << setw(15) << "PRECIO"
+		 << left << setw(15) << "NUMERO"
+    	 << left << setw(15) << "MARCA"
+         << left << setw(15) << "MODELO"
+         << left << setw(15) << "COLOR"
+         << left << setw(15) << "POTENCIA"
+         << left << setw(15) << "COMBUSTIBLE"
+         << left << setw(15) << "CAMBIO"
+         << left << setw(15) << "ANYO"
+         << left << setw(15) << "MATRICULA"
+         << endl;
+
+    int numeroAdquisiciones;
+    enviarComandoObtenerNumeroAdquisicionesPorDni(s, u.getDni(), numeroAdquisiciones);
+    Adquisicion* listaAdquisicion;
+	listaAdquisicion = new Adquisicion[numeroAdquisiciones];
+    enviarComandoObtenerAdquisicionesPorDni(s, u.getDni(), listaAdquisicion, numeroAdquisiciones);
+
+
+
+    for (int i = 0; i < numeroAdquisiciones; i++) {
+    	cout << left << setw(15) << i+1;
+		listaAdquisicion[i].mostrarAdquisicion();
+	}
+
+    int opcion;
+
+    cout<<"Introduce 1 para salir: ";cin>>opcion;cout<<endl;
+
+    if (opcion == 1) {
+    	menuPrincipal(s, u);
+    	delete [] listaAdquisicion;
+    }
+
+
+
 }
 
 void menuModificarUsuario(SOCKET* s, Usuario u) {

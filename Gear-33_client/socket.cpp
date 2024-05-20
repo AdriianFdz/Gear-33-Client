@@ -329,3 +329,70 @@ void enviarComandoAdquirirCoche(SOCKET* s, char* fecha_ini, char* fecha_fin, Coc
 	sprintf(sendBuff, "%i", n_dias);
 	send(*s, sendBuff, sizeof(sendBuff), 0);
 }
+
+void enviarComandoObtenerNumeroAdquisicionesPorDni(SOCKET *s, char *dni, int &numeroAdquisiciones) {
+	char sendBuff[512], recvBuff[512];
+	strcpy(sendBuff, "OBTENER_NUMERO_ADQUISICIONES_POR_DNI");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	strcpy(sendBuff, dni);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	numeroAdquisiciones = atoi(recvBuff);
+
+}
+
+void enviarComandoObtenerAdquisicionesPorDni(SOCKET *s, char *dni, Adquisicion *listaAdquisicion, int& numeroAdquisiciones) {
+	char sendBuff[512], recvBuff[512];
+	strcpy(sendBuff, "OBTENER_ADQUISICIONES_POR_DNI");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	strcpy(sendBuff, dni);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	sprintf(sendBuff, "%i", numeroAdquisiciones);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	for (int i = 0; i < numeroAdquisiciones; i++) {
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaAdquisicion[i].setTipoAdquisicion(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaAdquisicion[i].setFechaInicio(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaAdquisicion[i].setFechaFin(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaAdquisicion[i].setPrecioAdquisicion(atof(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaAdquisicion[i].getCoche().setMatricula(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaAdquisicion[i].getCoche().setColor(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaAdquisicion[i].getCoche().setPotencia(atoi(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaAdquisicion[i].getCoche().setPrecio(atof(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaAdquisicion[i].getCoche().setAnyo(atoi(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaAdquisicion[i].getCoche().setModelo(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaAdquisicion[i].getCoche().setCambio(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaAdquisicion[i].getCoche().setCombustible(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaAdquisicion[i].getCoche().setMarca(recvBuff);
+	}
+
+	cout<<listaAdquisicion[0].getPrecioAdquisicion();
+}

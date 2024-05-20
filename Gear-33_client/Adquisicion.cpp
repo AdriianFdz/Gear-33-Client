@@ -45,9 +45,9 @@ Adquisicion::Adquisicion(const Adquisicion &other) {
 
 void Adquisicion::mostrarAdquisicion() {
 	cout<<this->getTipoAdquisicion()<<setw(15)<<this->fechaInicio<<setw(15)<<this->fechaFin<<setw(15)<<this->precioAdquisicion<<
-	setw(15)<<this->getCoche().getMarca()<<setw(15)<<this->getCoche().getModelo()<<setw(15)<<this->getCoche().getColor()<<
-	setw(15)<<this->getCoche().getPotencia()<<setw(15)<<this->getCoche().getCombustible()<<setw(15)<<this->getCoche().getCambio()<<
-	setw(15)<<this->getCoche().getAnyo()<<setw(15)<<this->getCoche().getMatricula();
+	setw(15)<<this->getCoche().getMarca()<<setw(15)<<this->getCoche().getModelo()<<setw(15)<<this->getCoche().getColor()<<endl;
+	//setw(15)<<this->getCoche().getPotencia()<<setw(15)<<this->getCoche().getCombustible()<<setw(15)<<this->getCoche().getCambio()<<endl;
+	//setw(15)<<this->getCoche().getAnyo()<<setw(15)<<this->getCoche().getMatricula();
 }
 
 char* Adquisicion::getTipoAdquisicion() {
