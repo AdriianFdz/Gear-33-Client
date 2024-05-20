@@ -394,5 +394,4 @@ void enviarComandoObtenerAdquisicionesPorDni(SOCKET *s, char *dni, Adquisicion *
 		listaAdquisicion[i].getCoche().setMarca(recvBuff);
 	}
 
-	cout<<listaAdquisicion[0].getPrecioAdquisicion();
 }

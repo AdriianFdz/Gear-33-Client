@@ -44,10 +44,19 @@ Adquisicion::Adquisicion(const Adquisicion &other) {
 }
 
 void Adquisicion::mostrarAdquisicion() {
-	cout<<this->getTipoAdquisicion()<<setw(15)<<this->fechaInicio<<setw(15)<<this->fechaFin<<setw(15)<<this->precioAdquisicion<<
-	setw(15)<<this->getCoche().getMarca()<<setw(15)<<this->getCoche().getModelo()<<setw(15)<<this->getCoche().getColor()<<endl;
-	//setw(15)<<this->getCoche().getPotencia()<<setw(15)<<this->getCoche().getCombustible()<<setw(15)<<this->getCoche().getCambio()<<endl;
-	//setw(15)<<this->getCoche().getAnyo()<<setw(15)<<this->getCoche().getMatricula();
+    cout << left << setw(15) << this->getTipoAdquisicion()
+         << left << setw(15) << this->getFechaInicio()
+         << left << setw(15) << this->getFechaFin()
+         << left << setw(15) << this->getPrecioAdquisicion()
+         << left << setw(15) << this->getCoche().getMarca()
+         << left << setw(15) << this->getCoche().getModelo()
+         << left << setw(15) << this->getCoche().getColor()
+         << left << setw(15) << this->getCoche().getPotencia()
+         << left << setw(15) << this->getCoche().getCombustible()
+		 << left << setw(15) << this->getCoche().getCambio()
+		 << left << setw(15) << this->getCoche().getAnyo()
+		 << left << setw(15) << this->getCoche().getMatricula()
+         << endl;
 }
 
 char* Adquisicion::getTipoAdquisicion() {
@@ -82,7 +91,7 @@ void Adquisicion::setPrecioAdquisicion(float precio) {
 	this->precioAdquisicion = precio;
 }
 
-Coche Adquisicion::getCoche() {
+Coche& Adquisicion::getCoche() {
 	return this->c;
 }
 

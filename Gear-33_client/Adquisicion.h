@@ -32,7 +32,7 @@ public:
 	void setFechaFin(char* fechaFin);
 	float getPrecioAdquisicion();
 	void setPrecioAdquisicion(float precio);
-	Coche getCoche();
+	Coche& getCoche();
 	void setCoche(Coche c);
 
 };

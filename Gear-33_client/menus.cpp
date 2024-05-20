@@ -242,7 +242,6 @@ void menuHistorial(SOCKET* s, Usuario u) {
     	 << left << setw(15) << "F_INICIO"
 		 << left << setw(15) << "F_FIN"
 		 << left << setw(15) << "PRECIO"
-		 << left << setw(15) << "NUMERO"
     	 << left << setw(15) << "MARCA"
          << left << setw(15) << "MODELO"
          << left << setw(15) << "COLOR"
@@ -255,14 +254,12 @@ void menuHistorial(SOCKET* s, Usuario u) {
 
     int numeroAdquisiciones;
     enviarComandoObtenerNumeroAdquisicionesPorDni(s, u.getDni(), numeroAdquisiciones);
-    Adquisicion* listaAdquisicion;
-	listaAdquisicion = new Adquisicion[numeroAdquisiciones];
+    Adquisicion listaAdquisicion[numeroAdquisiciones];
     enviarComandoObtenerAdquisicionesPorDni(s, u.getDni(), listaAdquisicion, numeroAdquisiciones);
 
 
 
     for (int i = 0; i < numeroAdquisiciones; i++) {
-    	cout << left << setw(15) << i+1;
 		listaAdquisicion[i].mostrarAdquisicion();
 	}
 
@@ -272,7 +269,6 @@ void menuHistorial(SOCKET* s, Usuario u) {
 
     if (opcion == 1) {
     	menuPrincipal(s, u);
-    	delete [] listaAdquisicion;
     }
 
 
