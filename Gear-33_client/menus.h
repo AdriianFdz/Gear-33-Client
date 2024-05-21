@@ -36,4 +36,6 @@ void menuModificarUsuario(SOCKET* s, Usuario u);
 
 void obtenerNumeroCoches(SOCKET* s, int& opcion, int& precioMin, int& precioMax, int& numeroCoches);
 void rellenarListaCoches(SOCKET* s, int& opcion, int& precioMin, int& precioMax, Coche* listaCoches, int& numeroCoches);
+void imprimirCoches(Coche* listaCoches, int numeroCoches);
+
 #endif /* MENUS_H_ */

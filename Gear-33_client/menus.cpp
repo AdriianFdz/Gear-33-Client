@@ -154,25 +154,10 @@ void menuCompraCoches(SOCKET* s, Usuario u) {
 	int numeroCoches;
 
 	obtenerNumeroCoches(s, opcion, precioMin, precioMax, numeroCoches);
-	cout << "NUMEROO " << numeroCoches << endl;
 	Coche listaCoches[numeroCoches];
 	rellenarListaCoches(s, opcion, precioMin, precioMax, listaCoches, numeroCoches);
 
-    cout << left << setw(15) << "NUMERO"
-    	 << left << setw(15) << "MARCA"
-         << left << setw(15) << "MODELO"
-         << left << setw(15) << "COLOR"
-         << left << setw(15) << "POTENCIA"
-         << left << setw(15) << "COMBUSTIBLE"
-         << left << setw(15) << "CAMBIO"
-         << left << setw(15) << "ANYO"
-         << left << setw(15) << "PRECIO"
-         << left << setw(15) << "MATRICULA"
-         << endl;
-    for (int i = 0; i < numeroCoches; i++) {
-    	cout << left << setw(15) << i+1;
-		listaCoches[i].mostrarCoche();
-	}
+	imprimirCoches(listaCoches, numeroCoches);
 
 	do {
 		cout << "Introduce el numero de coche que desea comprar (introduzca 0 para salir): ";
@@ -198,12 +183,6 @@ void menuCompraCoches(SOCKET* s, Usuario u) {
 		}
 
 	} while (opcion < 0 || opcion > numeroCoches);
-
-
-	/*
-	 * LIBERAR MEMORIA
-	 */
-	//delete[] listaCoches;
 }
 
 void menuAlquilaCoches(SOCKET* s, Usuario u) {
@@ -471,5 +450,23 @@ void rellenarListaCoches(SOCKET* s, int& opcion, int& precioMin, int& precioMax,
 		enviarComandoObtenerCochesPorPrecio(s, precioMin, precioMax, listaCoches, numeroCoches);
 	} else {
 		enviarComandoObtenerCochesTotal(s, listaCoches, numeroCoches);
+	}
+}
+
+void imprimirCoches(Coche* listaCoches, int numeroCoches){
+    cout << left << setw(15) << "NUMERO"
+    	 << left << setw(15) << "MARCA"
+         << left << setw(15) << "MODELO"
+         << left << setw(15) << "COLOR"
+         << left << setw(15) << "POTENCIA"
+         << left << setw(15) << "COMBUSTIBLE"
+         << left << setw(15) << "CAMBIO"
+         << left << setw(15) << "ANYO"
+         << left << setw(15) << "PRECIO"
+         << left << setw(15) << "MATRICULA"
+         << endl;
+    for (int i = 0; i < numeroCoches; i++) {
+    	cout << left << setw(15) << i+1;
+		listaCoches[i].mostrarCoche();
 	}
 }
