@@ -50,7 +50,28 @@ void menuRegistro(SOCKET* s) {
 
 	//Funcion pedirPersona
 	Usuario u;
+	int numProv;
 	u.pedirPersona();
+	enviarComandoObtenerNumeroProvincias(s, numProv);
+	Provincia listaProvincias[numProv];
+	enviarComandoObtenerProvincias(s, listaProvincias, numProv);
+	cout<<"Selecciona una provincia"<<endl;
+	for (int i = 0; i < numProv; ++i) {
+		cout<<i + 1<<": "<<listaProvincias[i].getNombre()<<endl;
+	}
+	int opcion;
+	cout<<endl;
+	cout<<"Introduce una opcion: ";cin>>opcion;cout<<endl;
+	char nombreCiudad[51];
+	int idCiudad;
+
+	cout<<"Introduce el nombre de la ciudad: ";cin>>nombreCiudad;cout<<endl;
+
+	enviarComandoAnadirCiudad(s, listaProvincias[opcion - 1], nombreCiudad, idCiudad);
+
+
+	u.setIdCiudad(idCiudad);
+
 	enviarComandoRegistro(s, u);
 	menuPrincipal(s, u);
 
