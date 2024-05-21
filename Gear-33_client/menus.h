@@ -3,6 +3,7 @@
 #include "dibujos.h"
 #include <winsock2.h>
 #include "Usuario.h"
+#include "Coche.h"
 
 void menuInicio(SOCKET* s);
 	void opcionMenuInicio(int *opcion, SOCKET* s);
@@ -33,4 +34,6 @@ void menuModificarUsuario(SOCKET* s, Usuario u);
 		void menuModificarCiudad(SOCKET* s, Usuario *u);
 		void menuModificarContrasena(SOCKET* s, Usuario *u);
 
+void obtenerNumeroCoches(SOCKET* s, int& opcion, int& precioMin, int& precioMax, int& numeroCoches);
+void rellenarListaCoches(SOCKET* s, int& opcion, int& precioMin, int& precioMax, Coche* listaCoches, int& numeroCoches);
 #endif /* MENUS_H_ */

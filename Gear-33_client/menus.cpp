@@ -152,30 +152,11 @@ void menuCompraCoches(SOCKET* s, Usuario u) {
 	cout << "2. No" << endl;
 
 	int numeroCoches;
-	Coche* listaCoches;
-	do {
-		cout << "Opcion: "; cin >> opcion;
-		if (opcion == 1){
-			cout << "Introduce el precio minimo deseado: ";
-			cin >> precioMin;
-			cout << "Introduce el precio maximo deseado: ";
-			cin >> precioMax;
 
-			//LLAMAR AL SOCKET
-			enviarComandoObtenerNumeroCochesPorPrecio(s, precioMin, precioMax, numeroCoches);
-			listaCoches = new Coche[numeroCoches];
-			enviarComandoObtenerCochesPorPrecio(s, precioMin, precioMax, listaCoches, numeroCoches);
-			//La listaCoches ya tiene todos los coches guardados en ese rango de precio
-		} else if (opcion == 2){
-			enviarComandoObtenerNumeroCochesTotal(s, numeroCoches);
-			listaCoches = new Coche[numeroCoches];
-			enviarComandoObtenerCochesTotal(s, listaCoches, numeroCoches);
-		} else {
-			cout << "Opcion no valida" << endl;
-		}
-
-	} while (opcion != 1 && opcion != 2);
-
+	obtenerNumeroCoches(s, opcion, precioMin, precioMax, numeroCoches);
+	cout << "NUMEROO " << numeroCoches << endl;
+	Coche listaCoches[numeroCoches];
+	rellenarListaCoches(s, opcion, precioMin, precioMax, listaCoches, numeroCoches);
 
     cout << left << setw(15) << "NUMERO"
     	 << left << setw(15) << "MARCA"
@@ -222,7 +203,7 @@ void menuCompraCoches(SOCKET* s, Usuario u) {
 	/*
 	 * LIBERAR MEMORIA
 	 */
-	delete[] listaCoches;
+	//delete[] listaCoches;
 }
 
 void menuAlquilaCoches(SOCKET* s, Usuario u) {
@@ -265,9 +246,9 @@ void menuHistorial(SOCKET* s, Usuario u) {
 
     int opcion;
 
-    cout<<"Introduce 1 para salir: ";cin>>opcion;cout<<endl;
+    cout<<"Introduce 0 para salir: ";cin>>opcion;cout<<endl;
 
-    if (opcion == 1) {
+    if (opcion == 0) {
     	menuPrincipal(s, u);
     }
 
@@ -459,4 +440,36 @@ void menuModificarContrasena(SOCKET* s, Usuario *u) {
 
 	menuModificarUsuario(s, *u);
 
+}
+
+
+void obtenerNumeroCoches(SOCKET* s, int& opcion, int& precioMin, int& precioMax, int& numeroCoches){
+	do {
+		cout << "Opcion: "; cin >> opcion;
+		if (opcion == 1){
+			cout << "Introduce el precio minimo deseado: ";
+			cin >> precioMin;
+			cout << "Introduce el precio maximo deseado: ";
+			cin >> precioMax;
+
+			//LLAMAR AL SOCKET
+			enviarComandoObtenerNumeroCochesPorPrecio(s, precioMin, precioMax, numeroCoches);
+
+			//La listaCoches ya tiene todos los coches guardados en ese rango de precio
+		} else if (opcion == 2){
+			enviarComandoObtenerNumeroCochesTotal(s, numeroCoches);
+
+		} else {
+			cout << "Opcion no valida" << endl;
+		}
+
+	} while (opcion != 1 && opcion != 2);
+}
+
+void rellenarListaCoches(SOCKET* s, int& opcion, int& precioMin, int& precioMax, Coche* listaCoches, int& numeroCoches){
+	if (opcion == 1) {
+		enviarComandoObtenerCochesPorPrecio(s, precioMin, precioMax, listaCoches, numeroCoches);
+	} else {
+		enviarComandoObtenerCochesTotal(s, listaCoches, numeroCoches);
+	}
 }
