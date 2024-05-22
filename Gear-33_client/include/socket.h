@@ -14,9 +14,6 @@
 #include "Adquisicion.h"
 #include "Provincia.h"
 
-#define SERVER_IP "127.0.0.1"
-#define SERVER_PORT 6000
-
 int setUpSocket(SOCKET* s);
 int enviarComandoIniciarSesion(SOCKET* s, char* dni, char* contrasena, Usuario& u);
 void enviarComandoRegistro(SOCKET* s, Usuario& u);

@@ -7,6 +7,7 @@
 
 #include "../include/socket.h"
 #include "../include/Coche.h"
+#include "../include/Fichero.h"
 
 #include <winsock2.h>
 #include <iostream>
@@ -35,9 +36,12 @@ int setUpSocket(SOCKET* s){
 	}
 	cout << "Socket creado correctamente" << endl;
 
-	server.sin_addr.s_addr = inet_addr(SERVER_IP);
+	Fichero f;
+	f.leerConfig();
+
+	server.sin_addr.s_addr = inet_addr(f.getIp());
 	server.sin_family = AF_INET;
-	server.sin_port = htons(SERVER_PORT);
+	server.sin_port = htons(f.getPuerto());
 
 	//CONNECT to remote server
 	if (connect(*s, (struct sockaddr*) &server, sizeof(server)) == SOCKET_ERROR)
