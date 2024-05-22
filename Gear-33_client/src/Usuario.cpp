@@ -120,7 +120,6 @@ void Usuario::pedirPersona() {
 	char telefono[10];
 	char direccion[51];
 	char contrasena[51];
-	int idCiudad;
 
 	cout<<"Introduce el dni: ";cin>>dni;cout<<endl;
 	setDni(dni);
@@ -128,7 +127,7 @@ void Usuario::pedirPersona() {
 	setNombre(nombre);
 	cout<<"Introduce el apellido: ";cin>>apellido;cout<<endl;
 	setApellido(apellido);
-	cout<<"Introduce la fecha de nacimiento (dd/mm/aaaa): ";cin>>fechaNacimiento;cout<<endl;
+	cout<<"Introduce la fecha de nacimiento (aaaa-mm-dd): ";cin>>fechaNacimiento;cout<<endl;
 	setFechaNac(fechaNacimiento);
 	cout<<"Introduce el telefono: ";cin>>telefono;cout<<endl;
 	setTelefono(telefono);

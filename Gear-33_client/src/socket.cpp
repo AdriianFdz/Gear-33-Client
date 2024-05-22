@@ -89,7 +89,7 @@ int enviarComandoIniciarSesion(SOCKET* s, char* dni, char* contrasena, Usuario& 
 }
 
 void enviarComandoRegistro(SOCKET* s, Usuario& u) {
-	char sendBuff[512], recvBuff[512];
+	char sendBuff[512];
 
 
 	strcpy(sendBuff, "COMP_REGISTRO");
@@ -311,8 +311,8 @@ void enviarComandoObtenerCochesTotal(SOCKET* s, Coche* listaCoches, int& numeroC
 	}
 }
 
-void enviarComandoAdquirirCoche(SOCKET* s, char* fecha_ini, char* fecha_fin, Coche c, char* dni, char* tipoAdquisicion){
-	char sendBuff[512], recvBuff[512];
+void enviarComandoAdquirirCoche(SOCKET* s, char* fecha_ini, char* fecha_fin, Coche c, char* dni, const char* tipoAdquisicion){
+	char sendBuff[512];
 	strcpy(sendBuff, "ADQUIRIR_COCHE");
 	send(*s, sendBuff, sizeof(sendBuff), 0);
 
@@ -631,7 +631,7 @@ int obtenerDiferenciaDias(char* fechaInicio, char* fechaFin){
 }
 
 void enviarComandoSalir(SOCKET *s) {
-	char sendBuff[512], recvBuff[512];
+	char sendBuff[512];
 	strcpy(sendBuff, "SALIR");
 	send(*s, sendBuff, sizeof(sendBuff), 0);
 }
