@@ -91,6 +91,7 @@ int enviarComandoIniciarSesion(SOCKET* s, char* dni, char* contrasena, Usuario& 
 void enviarComandoRegistro(SOCKET* s, Usuario& u) {
 	char sendBuff[512], recvBuff[512];
 
+
 	strcpy(sendBuff, "COMP_REGISTRO");
 	send(*s, sendBuff, sizeof(sendBuff), 0);
 	strcpy(sendBuff, u.getDni());
@@ -106,6 +107,8 @@ void enviarComandoRegistro(SOCKET* s, Usuario& u) {
 	strcpy(sendBuff, u.getTelefono());
 	send(*s, sendBuff, sizeof(sendBuff), 0);
 	strcpy(sendBuff, u.getContrasena());
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	sprintf(sendBuff, "%i", u.getIdCiudad());
 	send(*s, sendBuff, sizeof(sendBuff), 0);
 }
 
@@ -392,6 +395,60 @@ void enviarComandoObtenerAdquisicionesPorDni(SOCKET *s, char *dni, Adquisicion *
 		recv(*s, recvBuff, sizeof(recvBuff), 0);
 		listaAdquisicion[i].getCoche().setMarca(recvBuff);
 	}
+
+
+
+}
+
+
+/*
+ * PROVINCIAS / CIUDAD
+ */
+
+void enviarComandoObtenerNumeroProvincias(SOCKET *s, int &numeroProvincias) {
+	char sendBuff[512], recvBuff[512];
+	strcpy(sendBuff, "OBTENER_NUMERO_PROVINCIAS");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	numeroProvincias = atoi(recvBuff);
+
+
+}
+
+void enviarComandoObtenerProvincias(SOCKET *s, Provincia *listaProvincias, int &numProv) {
+	char sendBuff[512], recvBuff[512];
+	strcpy(sendBuff, "OBTENER_PROVINCIAS");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	numProv = atoi(recvBuff);
+
+	for (int i = 0; i < numProv; i++) {
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaProvincias[i].setId(atoi(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaProvincias[i].setNombre(recvBuff);
+
+	}
+
+}
+
+void enviarComandoAnadirCiudad(SOCKET *s, Provincia p, char* nombreCiudad, int &id_ciudad) {
+	char sendBuff[512], recvBuff[512];
+	strcpy(sendBuff, "ANADIR_CIUDAD");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	strcpy(sendBuff, nombreCiudad);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	sprintf(sendBuff, "%i", p.getId());
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	id_ciudad = atoi(recvBuff);
+
 
 }
 

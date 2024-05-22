@@ -12,6 +12,7 @@
 #include "Usuario.h"
 #include "Coche.h"
 #include "Adquisicion.h"
+#include "Provincia.h"
 
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 6000
@@ -36,6 +37,14 @@ void enviarComandoAdquirirCoche(SOCKET* s, char* fecha_ini, char* fecha_fin, Coc
 void enviarComandoObtenerNumeroAdquisicionesPorDni(SOCKET* s, char* dni, int& numeroAdquisiciones);
 void enviarComandoObtenerAdquisicionesPorDni(SOCKET* s, char* dni, Adquisicion* listaAdquisicion, int& numeroAdquisiciones);
 
+/*
+ * PROVINCIA / CIUDAD
+ */
+
+void enviarComandoObtenerNumeroProvincias(SOCKET* s, int& numeroProvincias);
+void enviarComandoObtenerProvincias(SOCKET *s, Provincia* listaProvincias, int &numProvs);
+
+void enviarComandoAnadirCiudad(SOCKET *s, Provincia p, char* nombreCiudad, int &id_ciudad);
 
 /*
  * ALQUILER
@@ -48,4 +57,5 @@ void enviarComandoObtenerCochesTotalAlquiler(SOCKET* s, Coche* listaCoches, int&
 
 //FUNCIONES GENERALES
 int obtenerDiferenciaDias(char* fechaInicio, char* fechaFin);
+
 #endif /* SOCKET_H_ */
