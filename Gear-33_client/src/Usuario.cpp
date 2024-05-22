@@ -5,8 +5,8 @@
  *      Author: seven
  */
 
-#include "Usuario.h"
-#include "string.h"
+#include "../include/Usuario.h"
+#include "../include/string.h"
 #include <iostream>
 using namespace std;
 

@@ -5,8 +5,8 @@
  *      Author: seven
  */
 
-#include "socket.h"
-#include "Coche.h"
+#include "../include/socket.h"
+#include "../include/Coche.h"
 
 #include <winsock2.h>
 #include <iostream>

@@ -5,7 +5,7 @@
  *      Author: oierc
  */
 
-#include "Provincia.h"
+#include "../include/Provincia.h"
 #include <string.h>
 
 Provincia::Provincia() {

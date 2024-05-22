@@ -1,5 +1,5 @@
-#include "menus.h"
-#include "socket.h"
+#include "../include/menus.h"
+#include "../include/socket.h"
 #include <iostream>
 #include <iomanip>
 #include <ctime>

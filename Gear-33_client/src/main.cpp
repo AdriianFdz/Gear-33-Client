@@ -1,6 +1,6 @@
-#include "dibujos.h"
-#include "menus.h"
-#include "socket.h"
+#include "../include/dibujos.h"
+#include "../include/menus.h"
+#include "../include/socket.h"
 
 #include <winsock2.h>
 

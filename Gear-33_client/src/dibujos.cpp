@@ -1,4 +1,4 @@
-#include "dibujos.h"
+#include "../include/dibujos.h"
 #include <iostream>
 using namespace std;
 

@@ -5,7 +5,7 @@
  *      Author: oierc
  */
 
-#include "Adquisicion.h"
+#include "../include/Adquisicion.h"
 #include <string.h>
 #include <iostream>
 #include <iomanip>
