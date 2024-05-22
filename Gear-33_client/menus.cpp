@@ -14,7 +14,6 @@ void menuInicio(SOCKET* s) {
 	dibujoLogo();
 	cout<<"1. Registrarse"<<endl<<
 		  "2. Iniciar sesion"<<endl<<
-		  "3. Panel de administrador"<<endl<<
 		  "0. Salir"<<endl<<endl<<
 		  "Introduce una opcion: "; cin>>opcion;cout<<endl;
 	opcionMenuInicio(&opcion, s);
@@ -29,8 +28,6 @@ void opcionMenuInicio(int *opcion, SOCKET* s) {
 				break;
 			case 2:
 				menuInicioSesion(s);
-				break;
-			case 3:
 				break;
 			case 0:
 				cout<<"SALIENDO...";
@@ -48,7 +45,6 @@ void menuRegistro(SOCKET* s) {
 		  "   Registro de usuario   "<<endl<<endl<<
 		  "-------------------------"<<endl<<endl;
 
-	//Funcion pedirPersona
 	Usuario u;
 	int numProv;
 	u.pedirPersona();
@@ -300,11 +296,6 @@ void menuModificarUsuario(SOCKET* s, Usuario u) {
 	cout<<"-------------------------"<<endl<<endl<<
 		  "    Modificar usuario    "<<endl<<endl<<
 		  "-------------------------"<<endl<<endl;
-
-	//char contrasena[25];
-	//cout<<"Inserte contrasena: ";cin>>contrasena;cout<<endl;
-
-	//hacer funcion que pida y compruebe contraseña antes de modificar los dato????
 
 	cout<<"1. Modificar nombre"<<endl<<
 		  "2. Modificar apellido"<<endl<<
