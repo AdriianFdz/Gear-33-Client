@@ -8,7 +8,6 @@
 int main() {
 	SOCKET s;
 	setUpSocket(&s);
-	//enviarComandoIniciarSesion(&s, "testa", "test");
 
 	menuInicio(&s);
 
