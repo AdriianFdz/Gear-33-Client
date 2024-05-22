@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void menuInicio(SOCKET* s) {
+void menuInicio(SOCKET* s, Log& logger) {
 	system("cls");
 	int opcion;
 	dibujoLogo();
@@ -16,31 +16,32 @@ void menuInicio(SOCKET* s) {
 		  "2. Iniciar sesion"<<endl<<
 		  "0. Salir"<<endl<<endl<<
 		  "Introduce una opcion: "; cin>>opcion;cout<<endl;
-	opcionMenuInicio(&opcion, s);
+	opcionMenuInicio(&opcion, s, logger);
 
 }
 
-void opcionMenuInicio(int *opcion, SOCKET* s) {
+void opcionMenuInicio(int *opcion, SOCKET* s, Log& logger) {
 	system("cls");
 	switch (*opcion) {
 			case 1:
-				menuRegistro(s);
+				menuRegistro(s, logger);
 				break;
 			case 2:
-				menuInicioSesion(s);
+				menuInicioSesion(s, logger);
 				break;
 			case 0:
 				enviarComandoSalir(s);
+				logger.anadirLog("Programa cerrado correctamente");
 				cout<<"SALIENDO...";
 				exit(0);
 			default:
 				cout<<"El digito introducido no corresponde a ninguno de los anteriores"<<endl;
-				menuInicio(s);
+				menuInicio(s, logger);
 				break;
 		}
 }
 
-void menuRegistro(SOCKET* s) {
+void menuRegistro(SOCKET* s, Log& logger) {
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
 		  "   Registro de usuario   "<<endl<<endl<<
@@ -70,11 +71,14 @@ void menuRegistro(SOCKET* s) {
 	u.setIdCiudad(idCiudad);
 
 	enviarComandoRegistro(s, u);
-	menuPrincipal(s, u);
+
+	logger.anadirLog("Usuario registrado correctamente");
+
+	menuPrincipal(s, u, logger);
 
 }
 
-void menuInicioSesion(SOCKET* s) {
+void menuInicioSesion(SOCKET* s, Log& logger) {
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
 		  "      Iniciar sesion     "<<endl<<endl<<
@@ -87,11 +91,6 @@ void menuInicioSesion(SOCKET* s) {
 	cout<<"Inserte contrasena: ";
 	cin>>contrasena;
 
-	/*
-	 * Crear Usuario u
-	 * Pasarlo como referencia a enviarComandoIniciarSesion (Usuario &u)
-	 */
-
 	Usuario u;
 	int existe = enviarComandoIniciarSesion(s, dni, contrasena, u);
 
@@ -101,21 +100,26 @@ void menuInicioSesion(SOCKET* s) {
 		cout << endl << "=========================================================="<<endl;
 		cout << "Creedenciales correctas. Accediendo a su pagina personal." << endl;
 		cout << "=========================================================="<<endl;
+
+		logger.anadirLog("Inicio de sesion correcto");
+
 		Sleep(3000);
-		menuPrincipal(s, u);
+		menuPrincipal(s, u, logger);
 	}
 
 	cout << endl << "=========================================================="<<endl;
 	cout << "Error al iniciar sesion. Volviendo a la pagina principal." << endl;
 	cout << "=========================================================="<<endl;
 
+	logger.anadirLog("Error al iniciar sesion");
+
 	Sleep(3000);
-	menuInicio(s);
+	menuInicio(s, logger);
 
 
 }
 
-void menuPrincipal(SOCKET* s, Usuario &u) {
+void menuPrincipal(SOCKET* s, Usuario &u, Log &logger) {
 	system("cls");
 	int opcion;
 	dibujoPersona();
@@ -128,35 +132,35 @@ void menuPrincipal(SOCKET* s, Usuario &u) {
 		  "4. Ver historial de adquisiciones"<<endl<<
 		  "0. Cerrar sesion"<<endl<<endl<<
 		  "Introduce una opcion: ";cin>>opcion;cout<<endl;
-	opcionMenuPrincipal(s,&opcion, u);
+	opcionMenuPrincipal(s,&opcion, u, logger);
 }
 
-void opcionMenuPrincipal(SOCKET* s, int *opcion, Usuario &u) {
+void opcionMenuPrincipal(SOCKET* s, int *opcion, Usuario &u, Log& logger) {
 	system("cls");
 	switch (*opcion) {
 			case 1:
-				menuCompraCoches(s, u);
+				menuCompraCoches(s, u, logger);
 				break;
 			case 2:
-				menuAlquilaCoches(s, u);
+				menuAlquilaCoches(s, u, logger);
 				break;
 			case 3:
-				menuModificarUsuario(s, u);
+				menuModificarUsuario(s, u, logger);
 				break;
 			case 4:
-				menuHistorial(s, u);
+				menuHistorial(s, u, logger);
 				break;
 			case 0:
-				menuInicio(s);
+				menuInicio(s, logger);
 				break;
 			default:
 				cout<<"El digito introducido no corresponde a ninguno de los anteriores"<<endl;
-				menuPrincipal(s, u);
+				menuPrincipal(s, u, logger);
 				break;
 		}
 }
 
-void menuCompraCoches(SOCKET* s, Usuario &u) {
+void menuCompraCoches(SOCKET* s, Usuario &u, Log& logger) {
 	int opcion, precioMin = -1, precioMax = -1;
 	dibujoCoche();
 	cout<<"---------------------------------------"<<endl<<endl<<
@@ -170,7 +174,7 @@ void menuCompraCoches(SOCKET* s, Usuario &u) {
 
 	obtenerNumeroCoches(s, opcion, precioMin, precioMax, numeroCoches);
 	Coche listaCoches[numeroCoches];
-	rellenarListaCoches(s, opcion, precioMin, precioMax, listaCoches, numeroCoches);
+	rellenarListaCoches(s, opcion, precioMin, precioMax, listaCoches, numeroCoches, logger);
 
 	imprimirCoches(listaCoches, numeroCoches);
 
@@ -178,7 +182,7 @@ void menuCompraCoches(SOCKET* s, Usuario &u) {
 		cout << "Introduce el numero de coche que desea comprar (introduzca 0 para salir): ";
 		cin >> opcion;
 		if (opcion == 0) {
-			menuPrincipal(s, u);
+			menuPrincipal(s, u, logger);
 		} else if (opcion < 0 || opcion > numeroCoches) {
 			cout << "El numero introducido no es correcto." << endl;
 		} else {
@@ -194,14 +198,19 @@ void menuCompraCoches(SOCKET* s, Usuario &u) {
 			cout << "=========================================================="<<endl;
 			cout << "Coche con matricula " << listaCoches[opcion-1].getMatricula() << " adquirido correctamente" << endl;
 			cout << "=========================================================="<<endl;
+
+			char mensaje[256];
+			snprintf(mensaje, sizeof(mensaje), "Coche con matricula %s comprado correctamente", listaCoches[opcion-1].getMatricula());
+			logger.anadirLog(mensaje);
+
 			Sleep(3000);
-			menuPrincipal(s, u);
+			menuPrincipal(s, u, logger);
 		}
 
 	} while (opcion < 0 || opcion > numeroCoches);
 }
 
-void menuAlquilaCoches(SOCKET* s, Usuario &u) {
+void menuAlquilaCoches(SOCKET* s, Usuario &u, Log &logger) {
 	int opcion, precioMin = -1, precioMax = -1;
 	char fechaFin[11], fechaInicio[11];
 	dibujoCoche();
@@ -222,7 +231,7 @@ void menuAlquilaCoches(SOCKET* s, Usuario &u) {
 	Coche listaCoches[numeroCoches];
 
 	int difDias = obtenerDiferenciaDias(fechaInicio, fechaFin);
-	rellenarListaCochesAlquiler(s, opcion, precioMin, precioMax, listaCoches, numeroCoches, fechaInicio, difDias);
+	rellenarListaCochesAlquiler(s, opcion, precioMin, precioMax, listaCoches, numeroCoches, fechaInicio, difDias, logger);
 
 	imprimirCoches(listaCoches, numeroCoches);
 
@@ -230,7 +239,7 @@ void menuAlquilaCoches(SOCKET* s, Usuario &u) {
 		cout << "Introduce el numero de coche que desea alquilar (introduzca 0 para salir): ";
 		cin >> opcion;
 		if (opcion == 0) {
-			menuPrincipal(s, u);
+			menuPrincipal(s, u, logger);
 		} else if (opcion < 0 || opcion > numeroCoches) {
 			cout << "El numero introducido no es correcto." << endl;
 		} else {
@@ -238,15 +247,20 @@ void menuAlquilaCoches(SOCKET* s, Usuario &u) {
 			cout << "=========================================================="<<endl;
 			cout << "Coche con matricula " << listaCoches[opcion-1].getMatricula() << " adquirido correctamente" << endl;
 			cout << "=========================================================="<<endl;
+
+			char mensaje[256];
+			snprintf(mensaje, sizeof(mensaje), "Coche con matricula %s alquilado correctamente", listaCoches[opcion-1].getMatricula());
+			logger.anadirLog(mensaje);
+
 			Sleep(3000);
-			menuPrincipal(s, u);
+			menuPrincipal(s, u, logger);
 		}
 
 	} while (opcion < 0 || opcion > numeroCoches);
 
 }
 
-void menuHistorial(SOCKET* s, Usuario &u) {
+void menuHistorial(SOCKET* s, Usuario &u, Log &logger) {
 	dibujoCoche();
 	cout<<"----------------------------------"<<endl<<endl<<
 		  "    Historial de adquisiciones    "<<endl<<endl<<
@@ -276,19 +290,20 @@ void menuHistorial(SOCKET* s, Usuario &u) {
 		listaAdquisicion[i].mostrarAdquisicion();
 	}
 
-    int opcion;
+	logger.anadirLog("Adquisiciones mostradas correctamente");
 
+    int opcion;
     cout<<"Introduce 0 para salir: ";cin>>opcion;cout<<endl;
 
     if (opcion == 0) {
-    	menuPrincipal(s, u);
+    	menuPrincipal(s, u, logger);
     }
 
 
 
 }
 
-void menuModificarUsuario(SOCKET* s, Usuario &u) {
+void menuModificarUsuario(SOCKET* s, Usuario &u, Log &logger) {
 	int opcion;
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
@@ -305,47 +320,47 @@ void menuModificarUsuario(SOCKET* s, Usuario &u) {
 		  "8. Modificar contrasena"<<endl<<
 		  "0. Volver"<<endl<<endl<<
 		  "Introduce una opcion: ";cin>>opcion;cout<<endl;
-	opcionMenuModificarUsuario(s, &opcion, u);
+	opcionMenuModificarUsuario(s, &opcion, u, logger);
 }
 
-void opcionMenuModificarUsuario(SOCKET* s, int *opcion, Usuario &u) {
+void opcionMenuModificarUsuario(SOCKET* s, int *opcion, Usuario &u, Log &logger) {
 	system("cls");
 	switch (*opcion) {
 			case 1:
-				menuModificarNombre(s,&u);
+				menuModificarNombre(s, &u, logger);
 				break;
 			case 2:
-				menuModificarApellido(s,&u);
+				menuModificarApellido(s, &u, logger);
 				break;
 			case 3:
-				menuModificarDNI(s,&u);
+				menuModificarDNI(s, &u, logger);
 				break;
 			case 4:
-				menuModificarFechaNac(s,&u);
+				menuModificarFechaNac(s, &u, logger);
 				break;
 			case 5:
-				menuModificarTelefono(s,&u);
+				menuModificarTelefono(s, &u, logger);
 				break;
 			case 6:
-				menuModificarDireccion(s,&u);
+				menuModificarDireccion(s, &u, logger);
 				break;
 			case 7:
-				menuModificarCiudad(s,&u);
+				menuModificarCiudad(s, &u, logger);
 				break;
 			case 8:
-				menuModificarContrasena(s,&u);
+				menuModificarContrasena(s, &u, logger);
 				break;
 			case 0:
-				menuPrincipal(s,u);
+				menuPrincipal(s, u, logger);
 				break;
 			default:
 				cout<<"El digito introducido no corresponde a ninguno de los anteriores"<<endl;
-				menuModificarUsuario(s,u);
+				menuModificarUsuario(s, u, logger);
 				break;
 		}
 }
 
-void menuModificarNombre(SOCKET* s, Usuario *u) {
+void menuModificarNombre(SOCKET* s, Usuario *u, Log &logger) {
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
 		  "    Modificar nombre    "<<endl<<endl<<
@@ -358,12 +373,14 @@ void menuModificarNombre(SOCKET* s, Usuario *u) {
 
 	u->setNombre(nombre);
 
+	logger.anadirLog("Nombre modificado correctamente");
+
 	system("cls");
-	menuModificarUsuario(s,*u);
+	menuModificarUsuario(s, *u, logger);
 
 }
 
-void menuModificarApellido(SOCKET* s, Usuario *u) {
+void menuModificarApellido(SOCKET* s, Usuario *u, Log &logger) {
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
 		  "    Modificar apellido    "<<endl<<endl<<
@@ -376,11 +393,13 @@ void menuModificarApellido(SOCKET* s, Usuario *u) {
 
 	u->setApellido(apellido);
 
+	logger.anadirLog("Apellido modificado correctamente");
+
 	system("cls");
-	menuModificarUsuario(s, *u);
+	menuModificarUsuario(s, *u, logger);
 }
 
-void menuModificarDNI(SOCKET* s, Usuario *u) {
+void menuModificarDNI(SOCKET* s, Usuario *u, Log &logger) {
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
 		  "      Modificar DNI      "<<endl<<endl<<
@@ -393,11 +412,13 @@ void menuModificarDNI(SOCKET* s, Usuario *u) {
 
 	u->setDni(dni);
 
+	logger.anadirLog("DNI modificado correctamente");
+
 	system("cls");
-	menuModificarUsuario(s, *u);
+	menuModificarUsuario(s, *u, logger);
 }
 
-void menuModificarFechaNac(SOCKET* s, Usuario *u) {
+void menuModificarFechaNac(SOCKET* s, Usuario *u, Log &logger) {
 	dibujoPersona();
 	cout<<"-------------------------------------"<<endl<<endl<<
 		  "    Modificar fecha de nacimiento    "<<endl<<endl<<
@@ -410,11 +431,13 @@ void menuModificarFechaNac(SOCKET* s, Usuario *u) {
 
 	u->setFechaNac(fechaNac);
 
+	logger.anadirLog("Fecha de nacimiento modificada correctamente");
+
 	system("cls");
-	menuModificarUsuario(s, *u);
+	menuModificarUsuario(s, *u, logger);
 }
 
-void menuModificarTelefono(SOCKET* s, Usuario *u) {
+void menuModificarTelefono(SOCKET* s, Usuario *u, Log &logger) {
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
 		  "    Modificar telefono   "<<endl<<endl<<
@@ -427,11 +450,13 @@ void menuModificarTelefono(SOCKET* s, Usuario *u) {
 
 	u->setTelefono(telefono);
 
+	logger.anadirLog("Telefono modificado correctamente");
+
 	system("cls");
-	menuModificarUsuario(s, *u);
+	menuModificarUsuario(s, *u, logger);
 }
 
-void menuModificarDireccion(SOCKET* s, Usuario *u) {
+void menuModificarDireccion(SOCKET* s, Usuario *u, Log &logger) {
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
 		  "    Modificar usuario    "<<endl<<endl<<
@@ -446,11 +471,13 @@ void menuModificarDireccion(SOCKET* s, Usuario *u) {
 
 	u->setDireccion(direccion);
 
+	logger.anadirLog("Direccion modificado correctamente");
+
 	system("cls");
-	menuModificarUsuario(s, *u);
+	menuModificarUsuario(s, *u, logger);
 }
 
-void menuModificarCiudad(SOCKET* s, Usuario *u) {
+void menuModificarCiudad(SOCKET* s, Usuario *u, Log &logger) {
 	dibujoPersona();
 	cout<<"--------------------------------------"<<endl<<endl<<
 		  "    Modificar ciudad de residencia    "<<endl<<endl<<
@@ -484,12 +511,14 @@ void menuModificarCiudad(SOCKET* s, Usuario *u) {
 
 	enviarComandoModificarCiudad(s, u->getDni(), idCiudad);
 
+	logger.anadirLog("Ciudad modificada correctamente");
+
 	system("cls");
-	menuModificarUsuario(s, *u);
+	menuModificarUsuario(s, *u, logger);
 
 }
 
-void menuModificarContrasena(SOCKET* s, Usuario *u) {
+void menuModificarContrasena(SOCKET* s, Usuario *u, Log &logger) {
 	dibujoPersona();
 	cout<<"----------------------------"<<endl<<endl<<
 		  "    Modificar contrasena    "<<endl<<endl<<
@@ -502,8 +531,10 @@ void menuModificarContrasena(SOCKET* s, Usuario *u) {
 
 	u->setContrasena(contrasena);
 
+	logger.anadirLog("Contrasena modificada correctamente");
+
 	system("cls");
-	menuModificarUsuario(s, *u);
+	menuModificarUsuario(s, *u, logger);
 
 }
 
@@ -519,7 +550,6 @@ void obtenerNumeroCoches(SOCKET* s, int& opcion, int& precioMin, int& precioMax,
 
 			//LLAMAR AL SOCKET
 			enviarComandoObtenerNumeroCochesPorPrecio(s, precioMin, precioMax, numeroCoches);
-
 			//La listaCoches ya tiene todos los coches guardados en ese rango de precio
 		} else if (opcion == 2){
 			enviarComandoObtenerNumeroCochesTotal(s, numeroCoches);
@@ -531,11 +561,13 @@ void obtenerNumeroCoches(SOCKET* s, int& opcion, int& precioMin, int& precioMax,
 	} while (opcion != 1 && opcion != 2);
 }
 
-void rellenarListaCoches(SOCKET* s, int& opcion, int& precioMin, int& precioMax, Coche* listaCoches, int& numeroCoches){
+void rellenarListaCoches(SOCKET* s, int& opcion, int& precioMin, int& precioMax, Coche* listaCoches, int& numeroCoches, Log& logger){
 	if (opcion == 1) {
 		enviarComandoObtenerCochesPorPrecio(s, precioMin, precioMax, listaCoches, numeroCoches);
+		logger.anadirLog("Lista de coches por precio rellenada correctamente");
 	} else {
 		enviarComandoObtenerCochesTotal(s, listaCoches, numeroCoches);
+		logger.anadirLog("Lista de coches rellenada correctamente");
 	}
 }
 
@@ -580,10 +612,12 @@ void obtenerNumeroCochesAlquiler(SOCKET* s, int& opcion, int& precioMin, int& pr
 
 }
 
-void rellenarListaCochesAlquiler(SOCKET* s, int& opcion, int& precioMin, int& precioMax, Coche* listaCoches, int& numeroCoches, char* fechaInicio, int difDias){
+void rellenarListaCochesAlquiler(SOCKET* s, int& opcion, int& precioMin, int& precioMax, Coche* listaCoches, int& numeroCoches, char* fechaInicio, int difDias, Log& logger){
 	if (opcion == 1) {
 		enviarComandoObtenerCochesPorPrecioAlquiler(s, precioMin, precioMax, listaCoches, numeroCoches, fechaInicio, difDias);
+		logger.anadirLog("Lista de coches de alquiler por precio rellenada correctamente");
 	} else {
 		enviarComandoObtenerCochesTotalAlquiler(s, listaCoches, numeroCoches, fechaInicio, difDias);
+		logger.anadirLog("Lista de coches de alquiler rellenada correctamente");
 	}
 }
