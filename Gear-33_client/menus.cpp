@@ -173,24 +173,62 @@ void menuCompraCoches(SOCKET* s, Usuario u) {
 		    time_t t = time(nullptr);
 		    tm* now = localtime(&t);
 		    char fecha_ini[11];
-		    strftime(fecha_ini, sizeof(fecha_ini), "%d-%m-%Y", now);
+		    strftime(fecha_ini, sizeof(fecha_ini), "%Y-%m-%d", now);
 		    char fecha_fin[11] = "NULL";
-			enviarComandoAdquirirCoche(s, fecha_ini, fecha_fin, listaCoches[opcion-1], u.getDni(), "compra", 0);
+			enviarComandoAdquirirCoche(s, fecha_ini, fecha_fin, listaCoches[opcion-1], u.getDni(), "compra");
 			cout << "=========================================================="<<endl;
 			cout << "Coche con matricula " << listaCoches[opcion-1].getMatricula() << " adquirido correctamente" << endl;
 			cout << "=========================================================="<<endl;
-			Sleep(3000);
+			Sleep(5000);
+			menuPrincipal(s, u);
 		}
 
 	} while (opcion < 0 || opcion > numeroCoches);
 }
 
 void menuAlquilaCoches(SOCKET* s, Usuario u) {
-	//funcion para recuperar todos los coches a alquilar
+	int opcion, precioMin = -1, precioMax = -1;
+	char fechaFin[11], fechaInicio[11];
 	dibujoCoche();
 	cout<<"-----------------------------------------"<<endl<<endl<<
 		  "    Vehiculos de alquiler disponibles    "<<endl<<endl<<
 		  "-----------------------------------------"<<endl<<endl;
+	cout << "Introduce la fecha en la que desea iniciar el alquiler: "; cin >> fechaInicio;
+	cout << "Introduce la fecha en la que desea finalizar el alquiler: "; cin >> fechaFin;
+
+	cout << "Desea introducir un rango de precios? (precio base del vehiculo)" <<endl;
+	cout << "1. Si" << endl;
+	cout << "2. No" << endl;
+
+
+	int numeroCoches;
+
+	obtenerNumeroCochesAlquiler(s, opcion, precioMin, precioMax, numeroCoches, fechaInicio);
+	Coche listaCoches[numeroCoches];
+
+	int difDias = obtenerDiferenciaDias(fechaInicio, fechaFin);
+	rellenarListaCochesAlquiler(s, opcion, precioMin, precioMax, listaCoches, numeroCoches, fechaInicio, difDias);
+
+	imprimirCoches(listaCoches, numeroCoches);
+
+	do {
+		cout << "Introduce el numero de coche que desea alquilar (introduzca 0 para salir): ";
+		cin >> opcion;
+		if (opcion == 0) {
+			menuPrincipal(s, u);
+		} else if (opcion < 0 || opcion > numeroCoches) {
+			cout << "El numero introducido no es correcto." << endl;
+		} else {
+			enviarComandoAdquirirCoche(s, fechaInicio, fechaFin, listaCoches[opcion-1], u.getDni(), "alquiler");
+			cout << "=========================================================="<<endl;
+			cout << "Coche con matricula " << listaCoches[opcion-1].getMatricula() << " adquirido correctamente" << endl;
+			cout << "=========================================================="<<endl;
+			Sleep(5000);
+			menuPrincipal(s, u);
+		}
+
+	} while (opcion < 0 || opcion > numeroCoches);
+
 }
 
 void menuHistorial(SOCKET* s, Usuario u) {
@@ -468,5 +506,36 @@ void imprimirCoches(Coche* listaCoches, int numeroCoches){
     for (int i = 0; i < numeroCoches; i++) {
     	cout << left << setw(15) << i+1;
 		listaCoches[i].mostrarCoche();
+	}
+}
+
+void obtenerNumeroCochesAlquiler(SOCKET* s, int& opcion, int& precioMin, int& precioMax, int& numeroCoches, char* fechaInicio){
+	do {
+		cout << "Opcion: "; cin >> opcion;
+		if (opcion == 1){
+			cout << "Introduce el precio minimo deseado: ";
+			cin >> precioMin;
+			cout << "Introduce el precio maximo deseado: ";
+			cin >> precioMax;
+
+			//LLAMAR AL SOCKET
+			enviarComandoObtenerNumeroCochesPorPrecioAlquiler(s, precioMin, precioMax, numeroCoches, fechaInicio);
+
+		} else if (opcion == 2){
+			enviarComandoObtenerNumeroCochesTotalAlquiler(s, numeroCoches, fechaInicio);
+
+		} else {
+			cout << "Opcion no valida" << endl;
+		}
+
+	} while (opcion != 1 && opcion != 2);
+
+}
+
+void rellenarListaCochesAlquiler(SOCKET* s, int& opcion, int& precioMin, int& precioMax, Coche* listaCoches, int& numeroCoches, char* fechaInicio, int difDias){
+	if (opcion == 1) {
+		enviarComandoObtenerCochesPorPrecioAlquiler(s, precioMin, precioMax, listaCoches, numeroCoches, fechaInicio, difDias);
+	} else {
+		enviarComandoObtenerCochesTotalAlquiler(s, listaCoches, numeroCoches, fechaInicio, difDias);
 	}
 }

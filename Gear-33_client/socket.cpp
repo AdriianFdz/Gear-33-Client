@@ -11,7 +11,8 @@
 #include <winsock2.h>
 #include <iostream>
 #include <stdlib.h>
-
+#include <ctime>
+#include <iomanip>
 
 using namespace std;
 
@@ -296,7 +297,7 @@ void enviarComandoObtenerCochesTotal(SOCKET* s, Coche* listaCoches, int& numeroC
 	}
 }
 
-void enviarComandoAdquirirCoche(SOCKET* s, char* fecha_ini, char* fecha_fin, Coche c, char* dni, char* tipoAdquisicion, int n_dias){
+void enviarComandoAdquirirCoche(SOCKET* s, char* fecha_ini, char* fecha_fin, Coche c, char* dni, char* tipoAdquisicion){
 	char sendBuff[512], recvBuff[512];
 	strcpy(sendBuff, "ADQUIRIR_COCHE");
 	send(*s, sendBuff, sizeof(sendBuff), 0);
@@ -316,7 +317,7 @@ void enviarComandoAdquirirCoche(SOCKET* s, char* fecha_ini, char* fecha_fin, Coc
 		strcpy(sendBuff, "alquiler");
 		send(*s, sendBuff, sizeof(sendBuff), 0);
 
-		sprintf(sendBuff, "%f", c.getPrecio() * 0.05 * n_dias);
+		sprintf(sendBuff, "%f", c.getPrecio());
 	}
 		send(*s, sendBuff, sizeof(sendBuff), 0);
 
@@ -326,8 +327,6 @@ void enviarComandoAdquirirCoche(SOCKET* s, char* fecha_ini, char* fecha_fin, Coc
 	strcpy(sendBuff, c.getMatricula());
 	send(*s, sendBuff, sizeof(sendBuff), 0);
 
-	sprintf(sendBuff, "%i", n_dias);
-	send(*s, sendBuff, sizeof(sendBuff), 0);
 }
 
 void enviarComandoObtenerNumeroAdquisicionesPorDni(SOCKET *s, char *dni, int &numeroAdquisiciones) {
@@ -395,3 +394,159 @@ void enviarComandoObtenerAdquisicionesPorDni(SOCKET *s, char *dni, Adquisicion *
 	}
 
 }
+
+void enviarComandoObtenerNumeroCochesPorPrecioAlquiler(SOCKET* s, int precioMin, int precioMax, int& numeroCoches, char* fechaInicio){
+	char sendBuff[512], recvBuff[512], precioMinimoArray[2], precioMaximoArray[2];
+	strcpy(sendBuff, "OBTENER_NUMERO_COCHES_POR_PRECIO_ALQUILER");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	itoa(precioMin, precioMinimoArray, 10);
+	strcpy(sendBuff, precioMinimoArray);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	itoa(precioMax, precioMaximoArray, 10);
+	strcpy(sendBuff, precioMaximoArray);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	strcpy(sendBuff, fechaInicio);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	numeroCoches = atoi(recvBuff);
+}
+
+void enviarComandoObtenerNumeroCochesTotalAlquiler(SOCKET* s, int& numeroCoches, char* fechaInicio){
+	char sendBuff[512], recvBuff[512];
+	strcpy(sendBuff, "OBTENER_NUMERO_COCHES_TOTAL_ALQUILER");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, fechaInicio);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	numeroCoches = atoi(recvBuff);
+}
+
+void enviarComandoObtenerCochesPorPrecioAlquiler(SOCKET* s, int precioMin, int precioMax, Coche* listaCoches, int& numeroCoches, char* fechaInicio, int difDias){
+	char sendBuff[512], recvBuff[512], precioMinimoArray[2], precioMaximoArray[2];
+	strcpy(sendBuff, "OBTENER_COCHES_POR_PRECIO_ALQUILER");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	itoa(precioMin, precioMinimoArray, 10);
+	strcpy(sendBuff, precioMinimoArray);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	itoa(precioMax, precioMaximoArray, 10);
+	strcpy(sendBuff, precioMaximoArray);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	strcpy(sendBuff, fechaInicio);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	numeroCoches = atoi(recvBuff);
+
+	for (int i = 0; i < numeroCoches; i++) {
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setMatricula(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setColor(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setPotencia(atoi(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setPrecio(atof(recvBuff) * 0.025 * difDias);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setAnyo(atoi(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setModelo(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setCambio(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setCombustible(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setMarca(recvBuff);
+	}
+}
+
+void enviarComandoObtenerCochesTotalAlquiler(SOCKET* s, Coche* listaCoches, int& numeroCoches, char* fechaInicio, int difDias){
+	char sendBuff[512], recvBuff[512];
+	strcpy(sendBuff, "OBTENER_COCHES_TOTAL_ALQUILER");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	strcpy(sendBuff, fechaInicio);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	numeroCoches = atoi(recvBuff);
+
+	for (int i = 0; i < numeroCoches; i++) {
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setMatricula(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setColor(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setPotencia(atoi(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setPrecio(atof(recvBuff) * 0.025 * difDias);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setAnyo(atoi(recvBuff));
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setModelo(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setCambio(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setCombustible(recvBuff);
+
+		recv(*s, recvBuff, sizeof(recvBuff), 0);
+		listaCoches[i].setMarca(recvBuff);
+	}
+}
+
+
+//FUNCIONES GENERALES
+
+int obtenerDiferenciaDias(char* fechaInicio, char* fechaFin){
+   tm tmFechaInicio = {};
+   tm tmFechaFin = {};
+
+   istringstream ssFechaInicio(fechaInicio);
+   istringstream ssFechaFin(fechaFin);
+
+   ssFechaInicio >> get_time(&tmFechaInicio, "%Y-%m-%d");
+   ssFechaFin >> get_time(&tmFechaFin, "%Y-%m-%d");
+
+   if (ssFechaInicio.fail() || ssFechaFin.fail()) {
+       cout << "Error al convertir las fechas de char* a tipo SS" << endl;
+       return -1;
+   }
+
+   time_t dateFechaInicio = mktime(&tmFechaInicio);
+   time_t dateFechaFin = mktime(&tmFechaFin);
+
+   if (dateFechaInicio == -1 || dateFechaFin == -1) {
+       cout << "Error al convertir las fechas de struct tm a time_t" << endl;
+       return -1;
+   }
+
+   int difSegundos = difftime(dateFechaFin, dateFechaInicio);
+   // Convertir segundos a días
+   int difDias = difSegundos / (60 * 60 * 24);
+
+   return difDias;
+}
+

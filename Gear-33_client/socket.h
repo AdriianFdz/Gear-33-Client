@@ -31,9 +31,21 @@ void enviarComandoObtenerNumeroCochesPorPrecio(SOCKET* s, int precioMin, int pre
 void enviarComandoObtenerCochesPorPrecio(SOCKET* s, int precioMin, int precioMax, Coche* listaCoches, int& numeroCoches);
 void enviarComandoObtenerNumeroCochesTotal(SOCKET* s, int& numeroCoches);
 void enviarComandoObtenerCochesTotal(SOCKET* s, Coche* listaCoches, int& numeroCoches);
-void enviarComandoAdquirirCoche(SOCKET* s, char* fecha_ini, char* fecha_fin, Coche c, char* dni, char* tipoAdquisicion, int n_dias);
+void enviarComandoAdquirirCoche(SOCKET* s, char* fecha_ini, char* fecha_fin, Coche c, char* dni, char* tipoAdquisicion);
 
 void enviarComandoObtenerNumeroAdquisicionesPorDni(SOCKET* s, char* dni, int& numeroAdquisiciones);
 void enviarComandoObtenerAdquisicionesPorDni(SOCKET* s, char* dni, Adquisicion* listaAdquisicion, int& numeroAdquisiciones);
 
+
+/*
+ * ALQUILER
+ */
+void enviarComandoObtenerNumeroCochesPorPrecioAlquiler(SOCKET* s, int precioMin, int precioMax, int& numeroCoches, char* fechaInicio);
+void enviarComandoObtenerNumeroCochesTotalAlquiler(SOCKET* s, int& numeroCoches, char* fechaInicio);
+
+void enviarComandoObtenerCochesPorPrecioAlquiler(SOCKET* s, int precioMin, int precioMax, Coche* listaCoches, int& numeroCoches, char* fechaInicio, int difDias);
+void enviarComandoObtenerCochesTotalAlquiler(SOCKET* s, Coche* listaCoches, int& numeroCoches, char* fechaInicio, int difDias);
+
+//FUNCIONES GENERALES
+int obtenerDiferenciaDias(char* fechaInicio, char* fechaFin);
 #endif /* SOCKET_H_ */

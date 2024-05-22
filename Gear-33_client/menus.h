@@ -38,4 +38,10 @@ void obtenerNumeroCoches(SOCKET* s, int& opcion, int& precioMin, int& precioMax,
 void rellenarListaCoches(SOCKET* s, int& opcion, int& precioMin, int& precioMax, Coche* listaCoches, int& numeroCoches);
 void imprimirCoches(Coche* listaCoches, int numeroCoches);
 
+/*
+ * ALQUILER
+ */
+
+void obtenerNumeroCochesAlquiler(SOCKET* s, int& opcion, int& precioMin, int& precioMax, int& numeroCoches, char* fechaInicio);
+void rellenarListaCochesAlquiler(SOCKET* s, int& opcion, int& precioMin, int& precioMax, Coche* listaCoches, int& numeroCoches, char* fechaInicio, int difDias);
 #endif /* MENUS_H_ */
