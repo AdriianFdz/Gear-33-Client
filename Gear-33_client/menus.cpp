@@ -30,8 +30,9 @@ void opcionMenuInicio(int *opcion, SOCKET* s) {
 				menuInicioSesion(s);
 				break;
 			case 0:
+				enviarComandoSalir(s);
 				cout<<"SALIENDO...";
-				break;
+				exit(0);
 			default:
 				cout<<"El digito introducido no corresponde a ninguno de los anteriores"<<endl;
 				menuInicio(s);

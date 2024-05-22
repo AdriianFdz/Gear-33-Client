@@ -61,4 +61,6 @@ void enviarComandoObtenerCochesTotalAlquiler(SOCKET* s, Coche* listaCoches, int&
 //FUNCIONES GENERALES
 int obtenerDiferenciaDias(char* fechaInicio, char* fechaFin);
 
+//COMANDO SALIR
+void enviarComandoSalir(SOCKET* s);
 #endif /* SOCKET_H_ */

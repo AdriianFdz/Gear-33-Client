@@ -630,3 +630,8 @@ int obtenerDiferenciaDias(char* fechaInicio, char* fechaFin){
    return difDias;
 }
 
+void enviarComandoSalir(SOCKET *s) {
+	char sendBuff[512], recvBuff[512];
+	strcpy(sendBuff, "SALIR");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+}
