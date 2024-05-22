@@ -101,17 +101,14 @@ void menuInicioSesion(SOCKET* s) {
 		cout << "Creedenciales correctas. Accediendo a su pagina personal." << endl;
 		cout << "=========================================================="<<endl;
 		Sleep(3000);
-		/*
-		 * Pasar a menu principal Usuario u como referencia
-		 */
 		menuPrincipal(s, u);
 	}
 
 	cout << endl << "=========================================================="<<endl;
-	cout << "Error al iniciar sesion. Accediendo a la pagina principal." << endl;
+	cout << "Error al iniciar sesion. Volviendo a la pagina principal." << endl;
 	cout << "=========================================================="<<endl;
 
-
+	Sleep(3000);
 	menuInicio(s);
 
 
@@ -128,7 +125,7 @@ void menuPrincipal(SOCKET* s, Usuario u) {
 		  "2. Alquilar un vehiculo"<<endl<<
 		  "3. Modificar datos de usuario"<<endl<<
 		  "4. Ver historial de adquisiciones"<<endl<<
-		  "0. Salir"<<endl<<endl<<
+		  "0. Cerrar sesion"<<endl<<endl<<
 		  "Introduce una opcion: ";cin>>opcion;cout<<endl;
 	opcionMenuPrincipal(s,&opcion, u);
 }
@@ -149,7 +146,7 @@ void opcionMenuPrincipal(SOCKET* s, int *opcion, Usuario u) {
 				menuHistorial(s, u);
 				break;
 			case 0:
-				cout<<"SALIENDO...";
+				menuInicio(s);
 				break;
 			default:
 				cout<<"El digito introducido no corresponde a ninguno de los anteriores"<<endl;
@@ -196,7 +193,7 @@ void menuCompraCoches(SOCKET* s, Usuario u) {
 			cout << "=========================================================="<<endl;
 			cout << "Coche con matricula " << listaCoches[opcion-1].getMatricula() << " adquirido correctamente" << endl;
 			cout << "=========================================================="<<endl;
-			Sleep(5000);
+			Sleep(3000);
 			menuPrincipal(s, u);
 		}
 
@@ -240,7 +237,7 @@ void menuAlquilaCoches(SOCKET* s, Usuario u) {
 			cout << "=========================================================="<<endl;
 			cout << "Coche con matricula " << listaCoches[opcion-1].getMatricula() << " adquirido correctamente" << endl;
 			cout << "=========================================================="<<endl;
-			Sleep(5000);
+			Sleep(3000);
 			menuPrincipal(s, u);
 		}
 
@@ -360,6 +357,7 @@ void menuModificarNombre(SOCKET* s, Usuario *u) {
 
 	u->setNombre(nombre);
 
+	system("cls");
 	menuModificarUsuario(s,*u);
 
 }
@@ -377,6 +375,7 @@ void menuModificarApellido(SOCKET* s, Usuario *u) {
 
 	u->setApellido(apellido);
 
+	system("cls");
 	menuModificarUsuario(s, *u);
 }
 
@@ -393,6 +392,7 @@ void menuModificarDNI(SOCKET* s, Usuario *u) {
 
 	u->setDni(dni);
 
+	system("cls");
 	menuModificarUsuario(s, *u);
 }
 
@@ -409,6 +409,7 @@ void menuModificarFechaNac(SOCKET* s, Usuario *u) {
 
 	u->setFechaNac(fechaNac);
 
+	system("cls");
 	menuModificarUsuario(s, *u);
 }
 
@@ -425,6 +426,7 @@ void menuModificarTelefono(SOCKET* s, Usuario *u) {
 
 	u->setTelefono(telefono);
 
+	system("cls");
 	menuModificarUsuario(s, *u);
 }
 
@@ -443,6 +445,7 @@ void menuModificarDireccion(SOCKET* s, Usuario *u) {
 
 	u->setDireccion(direccion);
 
+	system("cls");
 	menuModificarUsuario(s, *u);
 }
 
@@ -467,6 +470,7 @@ void menuModificarContrasena(SOCKET* s, Usuario *u) {
 
 	u->setContrasena(contrasena);
 
+	system("cls");
 	menuModificarUsuario(s, *u);
 
 }
