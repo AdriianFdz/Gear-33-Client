@@ -28,6 +28,7 @@ void enviarComandoModificarFechaNac(SOCKET* s, char* dni, char* fechaNueva);
 void enviarComandoModificarDireccion(SOCKET* s, char* dni, char* direccionNueva);
 void enviarComandoModificarTelefono(SOCKET* s, char* dni, char* telefonoNuevo);
 void enviarComandoModificarContrasena(SOCKET* s, char* dni, char* contrasenaNueva);
+void enviarComandoModificarCiudad(SOCKET *s, char *dni, int idCiudadNueva);
 void enviarComandoObtenerNumeroCochesPorPrecio(SOCKET* s, int precioMin, int precioMax, int& numeroCoches);
 void enviarComandoObtenerCochesPorPrecio(SOCKET* s, int precioMin, int precioMax, Coche* listaCoches, int& numeroCoches);
 void enviarComandoObtenerNumeroCochesTotal(SOCKET* s, int& numeroCoches);
@@ -36,6 +37,8 @@ void enviarComandoAdquirirCoche(SOCKET* s, char* fecha_ini, char* fecha_fin, Coc
 
 void enviarComandoObtenerNumeroAdquisicionesPorDni(SOCKET* s, char* dni, int& numeroAdquisiciones);
 void enviarComandoObtenerAdquisicionesPorDni(SOCKET* s, char* dni, Adquisicion* listaAdquisicion, int& numeroAdquisiciones);
+
+void enviarComandoConsultarCiudad(SOCKET* s, int idCiudad, char* nombreCiudad);
 
 /*
  * PROVINCIA / CIUDAD

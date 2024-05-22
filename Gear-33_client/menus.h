@@ -12,17 +12,17 @@ void menuRegistro(SOCKET* s);
 
 void menuInicioSesion(SOCKET* s);
 
-void menuPrincipal(SOCKET* s, Usuario u);
-	void opcionMenuPrincipal(SOCKET* s, int *opcion, Usuario u);
+void menuPrincipal(SOCKET* s, Usuario &u);
+	void opcionMenuPrincipal(SOCKET* s, int *opcion, Usuario &u);
 
-void menuCompraCoches(SOCKET* s, Usuario u);
+void menuCompraCoches(SOCKET* s, Usuario &u);
 
-void menuAlquilaCoches(SOCKET* s, Usuario u);
+void menuAlquilaCoches(SOCKET* s, Usuario &u);
 
-void menuHistorial(SOCKET* s, Usuario u);
+void menuHistorial(SOCKET* s, Usuario &u);
 
-void menuModificarUsuario(SOCKET* s, Usuario u);
-	void opcionMenuModificarUsuario(SOCKET* s, int *opcion, Usuario u);
+void menuModificarUsuario(SOCKET* s, Usuario &u);
+	void opcionMenuModificarUsuario(SOCKET* s, int *opcion, Usuario &u);
 
 		/*Todas estas funciones tienen que recibir Usuario *u */
 		void menuModificarNombre(SOCKET* s, Usuario *u);

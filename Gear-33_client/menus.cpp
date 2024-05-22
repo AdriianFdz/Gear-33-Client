@@ -114,7 +114,7 @@ void menuInicioSesion(SOCKET* s) {
 
 }
 
-void menuPrincipal(SOCKET* s, Usuario u) {
+void menuPrincipal(SOCKET* s, Usuario &u) {
 	system("cls");
 	int opcion;
 	dibujoPersona();
@@ -130,7 +130,7 @@ void menuPrincipal(SOCKET* s, Usuario u) {
 	opcionMenuPrincipal(s,&opcion, u);
 }
 
-void opcionMenuPrincipal(SOCKET* s, int *opcion, Usuario u) {
+void opcionMenuPrincipal(SOCKET* s, int *opcion, Usuario &u) {
 	system("cls");
 	switch (*opcion) {
 			case 1:
@@ -155,7 +155,7 @@ void opcionMenuPrincipal(SOCKET* s, int *opcion, Usuario u) {
 		}
 }
 
-void menuCompraCoches(SOCKET* s, Usuario u) {
+void menuCompraCoches(SOCKET* s, Usuario &u) {
 	int opcion, precioMin = -1, precioMax = -1;
 	dibujoCoche();
 	cout<<"---------------------------------------"<<endl<<endl<<
@@ -200,7 +200,7 @@ void menuCompraCoches(SOCKET* s, Usuario u) {
 	} while (opcion < 0 || opcion > numeroCoches);
 }
 
-void menuAlquilaCoches(SOCKET* s, Usuario u) {
+void menuAlquilaCoches(SOCKET* s, Usuario &u) {
 	int opcion, precioMin = -1, precioMax = -1;
 	char fechaFin[11], fechaInicio[11];
 	dibujoCoche();
@@ -245,7 +245,7 @@ void menuAlquilaCoches(SOCKET* s, Usuario u) {
 
 }
 
-void menuHistorial(SOCKET* s, Usuario u) {
+void menuHistorial(SOCKET* s, Usuario &u) {
 	dibujoCoche();
 	cout<<"----------------------------------"<<endl<<endl<<
 		  "    Historial de adquisiciones    "<<endl<<endl<<
@@ -287,7 +287,7 @@ void menuHistorial(SOCKET* s, Usuario u) {
 
 }
 
-void menuModificarUsuario(SOCKET* s, Usuario u) {
+void menuModificarUsuario(SOCKET* s, Usuario &u) {
 	int opcion;
 	dibujoPersona();
 	cout<<"-------------------------"<<endl<<endl<<
@@ -307,7 +307,7 @@ void menuModificarUsuario(SOCKET* s, Usuario u) {
 	opcionMenuModificarUsuario(s, &opcion, u);
 }
 
-void opcionMenuModificarUsuario(SOCKET* s, int *opcion, Usuario u) {
+void opcionMenuModificarUsuario(SOCKET* s, int *opcion, Usuario &u) {
 	system("cls");
 	switch (*opcion) {
 			case 1:
@@ -454,6 +454,37 @@ void menuModificarCiudad(SOCKET* s, Usuario *u) {
 	cout<<"--------------------------------------"<<endl<<endl<<
 		  "    Modificar ciudad de residencia    "<<endl<<endl<<
 		  "--------------------------------------"<<endl<<endl;
+	char nombreCiudadAntigua[51];
+
+	enviarComandoConsultarCiudad(s, u->getIdCiudad(), nombreCiudadAntigua);
+
+	cout<<"Ciudad actual: "<<nombreCiudadAntigua<<endl;
+
+	int numProv;
+	enviarComandoObtenerNumeroProvincias(s, numProv);
+	Provincia listaProvincias[numProv];
+	enviarComandoObtenerProvincias(s, listaProvincias, numProv);
+	cout<<"Selecciona una provincia"<<endl;
+	for (int i = 0; i < numProv; ++i) {
+		cout<<i + 1<<": "<<listaProvincias[i].getNombre()<<endl;
+	}
+	int opcion;
+	cout<<endl;
+	cout<<"Introduce una opcion: ";cin>>opcion;cout<<endl;
+	char nombreCiudad[51];
+	int idCiudad;
+
+	cout<<"Introduce la nueva ciudad: ";cin>>nombreCiudad;cout<<endl;
+
+	enviarComandoAnadirCiudad(s, listaProvincias[opcion - 1], nombreCiudad, idCiudad);
+
+
+	u->setIdCiudad(idCiudad);
+
+	enviarComandoModificarCiudad(s, u->getDni(), idCiudad);
+
+	system("cls");
+	menuModificarUsuario(s, *u);
 
 }
 

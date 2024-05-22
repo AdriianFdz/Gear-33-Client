@@ -190,6 +190,17 @@ void enviarComandoModificarContrasena(SOCKET *s, char *dni, char *contrasenaNuev
 	send(*s, sendBuff, sizeof(sendBuff), 0);
 }
 
+void enviarComandoModificarCiudad(SOCKET *s, char *dni, int idCiudadNueva) {
+	char sendBuff[512];
+
+	strcpy(sendBuff, "COMP_MODIF_CIUDAD");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	strcpy(sendBuff, dni);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+	sprintf(sendBuff, "%i", idCiudadNueva);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+}
+
 void enviarComandoObtenerNumeroCochesPorPrecio(SOCKET* s, int precioMin, int precioMax, int& numeroCoches){
 	char sendBuff[512], recvBuff[512], precioMinimoArray[2], precioMaximoArray[2];
 	strcpy(sendBuff, "OBTENER_NUMERO_COCHES_POR_PRECIO");
@@ -574,6 +585,18 @@ void enviarComandoObtenerCochesTotalAlquiler(SOCKET* s, Coche* listaCoches, int&
 	}
 }
 
+void enviarComandoConsultarCiudad(SOCKET* s, int idCiudad, char* nombreCiudad) {
+	char sendBuff[512], recvBuff[512];
+	strcpy(sendBuff, "OBTENER_CIUDAD");
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	sprintf(sendBuff, "%i", idCiudad);
+	send(*s, sendBuff, sizeof(sendBuff), 0);
+
+	recv(*s, recvBuff, sizeof(recvBuff), 0);
+	strcpy(nombreCiudad, recvBuff);
+
+}
 
 //FUNCIONES GENERALES
 
