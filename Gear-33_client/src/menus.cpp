@@ -217,8 +217,8 @@ void menuAlquilaCoches(SOCKET* s, Usuario &u, Log &logger) {
 	cout<<"-----------------------------------------"<<endl<<endl<<
 		  "    Vehiculos de alquiler disponibles    "<<endl<<endl<<
 		  "-----------------------------------------"<<endl<<endl;
-	cout << "Introduce la fecha en la que desea iniciar el alquiler: "; cin >> fechaInicio;
-	cout << "Introduce la fecha en la que desea finalizar el alquiler: "; cin >> fechaFin;
+	cout << "Introduce la fecha en la que desea iniciar el alquiler (aaaa-mm-dd): "; cin >> fechaInicio;
+	cout << "Introduce la fecha en la que desea finalizar el alquiler (aaaa-mm-dd): "; cin >> fechaFin;
 
 	cout << "Desea introducir un rango de precios? (precio base del vehiculo)" <<endl;
 	cout << "1. Si" << endl;
